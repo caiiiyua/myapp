@@ -1,0 +1,39 @@
+{{set . "title" "Inventory"}}
+{{template "header.html" .}}
+
+<header class="hero-unit" style="background-color:#A9F16C">
+  <div class="container">
+    <div class="row">
+      <div class="hero-text">
+        <h1>Inventory</h1>
+        <p>There is inventory about all of items.</p>
+        {{if .item}}
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{.itemName}}</td>
+              <td>{{.itemStock}}</td>
+            </tr>
+          </tbody>
+        </table>
+        {{end}}
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+{{template "footer.html" .}}
