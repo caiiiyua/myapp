@@ -52,7 +52,7 @@ func (i *ItemCtrl) List() revel.Result {
 	if err != nil {
 		return i.RenderText("Error when trying to get Items from Database")
 	}
-	return i.RenderJson(items)
+	return i.Render(items)
 }
 
 func (i *ItemCtrl) Update(id int64) revel.Result {
@@ -74,5 +74,5 @@ func (i *ItemCtrl) Delete(id int64) revel.Result {
 	if err != nil || success == 0 {
 		return i.RenderText("Failed to delete Item [%v]", id)
 	}
-	retrn i.RenderText("Deleted Item [%v]", id)
+	return i.RenderText("Deleted Item [%v]", id)
 }

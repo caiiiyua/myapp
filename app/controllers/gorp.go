@@ -3,7 +3,6 @@ package controllers
 import (
 	"database/sql"
 	"github.com/coopernurse/gorp"
-	_ "github.com/mattn/go-sqlite3"
 	r "github.com/revel/revel"
 )
 

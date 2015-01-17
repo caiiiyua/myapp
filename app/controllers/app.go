@@ -7,7 +7,7 @@ import (
 )
 
 type App struct {
-	*revel.Controller
+	ItemCtrl
 }
 
 func (c App) Index() revel.Result {
@@ -16,8 +16,13 @@ func (c App) Index() revel.Result {
 
 func (c App) Inventory() revel.Result {
 	var item models.Item
-	item.Instance("cup", 10)
-	itemName := item.GetName()
-	itemStock := item.GetStock()
+	itemName := "cup"
+	itemStock := "10"
 	return c.Render(item, itemName, itemStock)
+}
+
+func (c App) Item() revel.Result {
+
+	// return c.Render()
+	return c.List()
 }

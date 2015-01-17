@@ -1,6 +1,14 @@
 package controllers
 
 import "github.com/revel/revel"
+import (
+	"database/sql"
+	"fmt"
+	"github.com/coopernurse/gorp"
+	_ "github.com/go-sql-driver/mysql"
+	"myapp/app/models"
+	"strings"
+)
 
 func getParamString(param string, defaultValue string) string {
 	p, found := revel.Config.String(param)
@@ -33,25 +41,26 @@ func getConnectionString() string {
 }
 
 func defineItemTable(dbm *gorp.DbMap) {
-	t := dbm.AddTable(models.Item{}).SetKey(true, "id")
-	t.ColMap("name").SetMaxSize(25)
+	t := dbm.AddTable(models.Item{}).SetKeys(true, "id")
+	// t.ColMap("name").SetMaxSize(25)
+	fmt.Println("table name is ", t.TableName)
 }
 
-func InitDB() {
+var InitDB func() = func() {
 	connectionString := getConnectionString()
 	if db, err := sql.Open("mysql", connectionString); err != nil {
 		revel.ERROR.Fatal(err)
 	} else {
 		Dbm = &gorp.DbMap{
-			Db: db,
-			Dialect: gorp.MySQLDialect{"naiping", "utf-8"}}
+			Db:      db,
+			Dialect: gorp.MySQLDialect{"InnoDB", "utf8"}}
+		defineItemTable(Dbm)
+
+		if err := Dbm.CreateTablesIfNotExists(); err != nil {
+			revel.ERROR.Fatal(err)
 		}
 	}
 
-	defineItemTable(Dbm)
-	if err := Dbm.CreateTableIfNotExists(); err != nil {
-		revel.ERROR.Fatal(err)
-	}
 }
 
 func init() {

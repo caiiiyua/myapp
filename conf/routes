@@ -6,11 +6,16 @@ module:testrunner
 
 GET     /                                       App.Index
 GET     /inventory                              App.Inventory
-GET     /inventory/:id                          InventoryCtrl.Get
-POST    /inventory                              InventoryCtrl.Add
-PUT     /inventory/:id                          InventoryCtrl.Update
-DELETE  /inventory/:id                          InventoryCtrl.Delete
-GET     /inventories                            InventoryCtrl.List
+GET     /item/:id                          		ItemCtrl.Get
+POST    /item                              		ItemCtrl.Add
+PUT     /item/:id                          		ItemCtrl.Update
+DELETE  /item/:id                        		ItemCtrl.Delete
+GET     /items                            		App.Item
+#GET     /inventory/:id                          InventoryCtrl.Get
+#POST    /inventory                              InventoryCtrl.Add
+#PUT     /inventory/:id                          InventoryCtrl.Update
+#DELETE  /inventory/:id                          InventoryCtrl.Delete
+#GET     /inventories                            InventoryCtrl.List
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
