@@ -6,17 +6,17 @@ import (
 	"myapp/app/models"
 )
 
-type ItemCtrl struct {
+type Items struct {
 	GorpController
 }
 
-func (i *ItemCtrl) parseItem() (models.Item, error) {
+func (i Items) parseItem() (models.Item, error) {
 	item := models.Item{}
 	err := json.NewDecoder(i.Request.Body).Decode(&item)
 	return item, err
 }
 
-func (i *ItemCtrl) Add() revel.Result {
+func (i Items) Add() revel.Result {
 	if item, err := i.parseItem(); err != nil {
 		return i.RenderText("Unable to parse item from JSON")
 	} else {
@@ -34,7 +34,7 @@ func (i *ItemCtrl) Add() revel.Result {
 	}
 }
 
-func (i *ItemCtrl) Get(id int64) revel.Result {
+func (i Items) Get(id int64) revel.Result {
 	item := new(models.Item)
 	err := i.Txn.SelectOne(item,
 		`select * from Item where id = ?`, id)
@@ -44,7 +44,7 @@ func (i *ItemCtrl) Get(id int64) revel.Result {
 	return i.RenderJson(item)
 }
 
-func (i *ItemCtrl) List() revel.Result {
+func (i Items) List() revel.Result {
 	lastId := parseIntOrDefault(i.Params.Get("lid"), -1)
 	limit := parseUintOrDefault(i.Params.Get("limit"), uint64(25))
 	items, err := i.Txn.Select(models.Item{},
@@ -55,7 +55,7 @@ func (i *ItemCtrl) List() revel.Result {
 	return i.Render(items)
 }
 
-func (i *ItemCtrl) Update(id int64) revel.Result {
+func (i Items) Update(id int64) revel.Result {
 	item, err := i.parseItem()
 	if err != nil {
 		return i.RenderText("Unable to parse item from JSON")
@@ -69,7 +69,7 @@ func (i *ItemCtrl) Update(id int64) revel.Result {
 	return i.RenderText("Updated Item [%v]", id)
 }
 
-func (i *ItemCtrl) Delete(id int64) revel.Result {
+func (i Items) Delete(id int64) revel.Result {
 	success, err := i.Txn.Delete(&models.Item{Id: id})
 	if err != nil || success == 0 {
 		return i.RenderText("Failed to delete Item [%v]", id)
