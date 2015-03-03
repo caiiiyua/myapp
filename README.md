@@ -1,3 +1,6 @@
+# myapp
+A web app practice based on Revel/Golang
+
 # Welcome to Revel
 
 ## Getting Started
