@@ -6,10 +6,10 @@ module:testrunner
 
 GET     /                                       App.Index
 GET     /inventory                              App.Inventory
-GET     /item/:id                          		Items.Get
-POST    /item                              		Items.Add
-PUT     /item/:id                          		Items.Update
-DELETE  /item/:id                        		Items.Delete
+GET     /items/:id                          	Items.Get
+POST    /items                              	Items.Add
+PUT     /items/:id                          	Items.Update
+DELETE  /items/:id                        		Items.Delete
 GET     /items                            		Items.List
 #GET     /inventory/:id                          InventoryCtrl.Get
 #POST    /inventory                              InventoryCtrl.Add

@@ -1,3 +1,7 @@
 test-results/
 tmp/
 routes/
+*.mwb
+*.bak
+*.pdf
+.gitignore
