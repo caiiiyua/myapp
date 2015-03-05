@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
-	"github.com/revel/revel"
 	"myapp/app/models"
+
+	"github.com/revel/revel"
 )
 
 type Items struct {
@@ -34,7 +35,7 @@ func (i Items) Add() revel.Result {
 	}
 }
 
-func (i Items) Get(id int64) revel.Result {
+func (i Items) Show(id int64) revel.Result {
 	item := new(models.Item)
 	err := i.Txn.SelectOne(item,
 		`select * from Item where id = ?`, id)
@@ -42,6 +43,10 @@ func (i Items) Get(id int64) revel.Result {
 		return i.RenderText("Item [%v] doesn't exist.", id)
 	}
 	return i.RenderJson(item)
+}
+
+func (i Items) Index() revel.Result {
+	return i.List()
 }
 
 func (i Items) List() revel.Result {

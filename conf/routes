@@ -4,13 +4,29 @@
 
 module:testrunner
 
+# Home
 GET     /                                       App.Index
-GET     /inventory                              App.Inventory
-GET     /items/:id                          	Items.Get
+GET     /home                                   App.Index
+GET     /index                                  App.Index
+
+GET     /items                            		Items.List
+GET     /items/list                            	Items.List
+GET     /items/:id                          	Items.Show
 POST    /items                              	Items.Add
 PUT     /items/:id                          	Items.Update
 DELETE  /items/:id                        		Items.Delete
-GET     /items                            		Items.List
+
+# User register & login
+GET 	/register								Auth.Register
+POST 	/register								Auth.DoRegister
+GET 	/logout									Auth.Logout
+GET 	/login									Auth.Login
+POST 	/login									Auth.DoLogin
+
+GET 	/users 									Dashbord.Users
+GET 	/users/:id 								Dashbord.User
+GET     /inventory/                             App.Inventory
+
 #GET     /inventory/:id                          InventoryCtrl.Get
 #POST    /inventory                              InventoryCtrl.Add
 #PUT     /inventory/:id                          InventoryCtrl.Update
