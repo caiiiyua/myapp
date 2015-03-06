@@ -1,13 +1,17 @@
 package tests
 
-import "github.com/revel/revel"
+import (
+	"fmt"
+
+	"github.com/revel/revel"
+)
 
 type AppTest struct {
 	revel.TestSuite
 }
 
 func (t *AppTest) Before() {
-	println("Set up")
+	fmt.Println("Set up")
 }
 
 func (t *AppTest) TestThatIndexPageWorks() {
@@ -16,6 +20,12 @@ func (t *AppTest) TestThatIndexPageWorks() {
 	t.AssertContentType("text/html; charset=utf-8")
 }
 
+func (t *AppTest) TestUserRegister() {
+	t.Get("/register")
+	t.AssertOk()
+	t.AssertContentType("text/html; charset=utf-8")
+}
+
 func (t *AppTest) After() {
-	println("Tear down")
+	fmt.Println("Tear down")
 }

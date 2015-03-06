@@ -1,0 +1,41 @@
+# Forms
+register=Sign Up
+login=Sign In
+email=Email
+password=Password
+password2=Confirm Password
+hadAcount = Already have an account?
+hasAcount = Do not have an account?
+inputUsername=Username(email) is required
+inputEmail=Email is required
+wrongEmail=Wrong email
+wrongUsernameOrPassword=Wrong username or password
+inputPassword=Password is required
+wrongPassword=Wrong password
+logining=Sign in
+loginSuccess=login success
+ing=processing
+use = Use
+submit=Submit
+
+# Pages
+home=Home
+app=MyApp
+about=About
+
+# Register
+registerSuccessAndRdirectToNote=Register success, redirecting...
+userHasBeenRegistered=%s has been registered
+
+# Find password
+passwordTips=The length is at least 6
+findPassword=Find password
+findPasswordSendEmailOver=We have already send the find password link to your email, please check out your email
+checkEmai=Check email
+findPasswordTimeout=time out
+reFindPassword=find password again
+updatePassword=Update password
+updatePasswordSuccessRedirectToLogin=update password success and redirect to login page...
+inputPassword2=Please input your password again
+confirmPassword=Please confirm your password
+notGoodPassword=Tt's not a good password, the length is at least 6

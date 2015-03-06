@@ -1,0 +1,96 @@
+{{template "home/header.html" .}}
+<style>
+
+</style>
+<section>
+	<div class="header">
+		<h2>Myapp, this is a test app</h2>
+		<p>"halo Revel"</p>
+		<p>"good Go for Bootstrap"</p>
+		
+		<div>
+			<a class="btn btn-success" href="/register">Register</a> 
+			&nbsp;
+			&nbsp;
+			<a class="btn btn-warning" href="/login">Login</a>
+			&nbsp;
+			&nbsp;
+			<a class="btn btn-primary" href="/about">About</a> 
+		</div>
+	</div>
+	
+	<div class="preview" style="position: relative;">
+		<div>
+			<div class="img-header">
+				<img src="/images/home/mac-btns.png"/>
+			</div>
+			<img src="/images/home/preview2.png" style="width: 750px;" />
+		</div>
+		<div class="mobile">
+			<div class="mobile-header">
+				<img src="/images/home/mac-dot.png" />
+			</div>
+			<img class="mobile-image" src="/images/home/mobile.png" />
+		</div>
+	</div>
+</section>
+
+<div class="container" id="aboutLeanote">
+	<h2>About</h2>
+     <div class="row">
+        <div class="col-md-3">
+          <h3>"knowledge"</h3>
+          <p>"knowledgeInfo"</p>
+        </div>
+        <div class="col-md-3">
+          <h3>"share"</h3>
+          <p>"shareInfo"</p>
+       </div>
+        <div class="col-md-3">
+          <h3>"cooperation"</h3>
+          <p>"cooperationInfo"</p>
+        </div>
+        <div class="col-md-3">
+          <h3>"blog"</h3>
+          <p>"blogInfo"</p>
+        </div>
+      </div>
+</div>
+
+<div class="container" id="download">
+	<h2 style="margin: 20px 0;text-align: center;">"download"</h2>
+     <div class="row">
+     	<div style="width:300px; margin:auto; padding: 10px;">
+			Linux : <a href="https://github.com/leanote/leanote/releases/download/0.4/leanote-linux-v0.4.bin.tar.gz">leanote-linux-v0.4.bin.tar.gz</a> <br />
+			MacOS X : <a href="https://github.com/leanote/leanote/releases/download/0.4/leanote-mac-v0.4.bin.tar.gz">leanote-mac-v0.4.bin.tar.gz</a> <br />
+			<br />
+			<a href="https://github.com/leanote/leanote#3-how-to-install-leanote">"howToInstallLeanote"</a>
+		</div>
+     </div>
+</div>
+
+{{template "home/footer.html"}}
+
+<script src="/js/jquery-1.9.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<script>
+$(function() {
+	/*
+	var u = navigator.userAgent;
+	var isMobile = u.indexOf('Android')>-1 || u.indexOf('Linux')>-1;
+	if(isMobile || $("body").width() < 600) {
+		location.href = "/mobile/index";
+	}
+	*/
+	// 平滑滚动
+	$(".smooth-scroll").click(function(e) {
+		e.preventDefault();
+		var t = $(this).attr("target");
+		var targetOffset = $(t).offset().top - 80;
+		$('html,body').animate({scrollTop: targetOffset}, 300);
+	});
+});
+</script>
+</body>
+</html>

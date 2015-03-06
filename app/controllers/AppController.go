@@ -1,17 +1,24 @@
 package controllers
 
-import "github.com/revel/revel"
+import (
+	"fmt"
+
+	"github.com/revel/revel"
+)
 
 import (
 	"myapp/app/models"
 )
 
 type App struct {
-	*revel.Controller
+	BaseController
 }
 
 func (c App) Index() revel.Result {
-	return c.Render()
+	locale := c.SetLocale()
+	fmt.Println(locale)
+	//	return c.RenderTemplate("home/index_" + locale + ".html")
+	return c.RenderTemplate("home/index.html")
 }
 
 func (c App) Inventory() revel.Result {
