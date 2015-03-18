@@ -1,6 +1,13 @@
 package app
 
-import "github.com/revel/revel"
+import (
+	"github.com/go-xorm/xorm"
+	"github.com/revel/revel"
+)
+
+var (
+	Engine *xorm.Engine
+)
 
 func init() {
 	// Filters is the default set of global filters.

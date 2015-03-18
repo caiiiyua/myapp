@@ -46,7 +46,7 @@ func defineItemTable(dbm *gorp.DbMap) {
 	fmt.Println("table name is ", t.TableName)
 }
 
-var InitDB func() = func() {
+var initDB func() = func() {
 	connectionString := getConnectionString()
 	if db, err := sql.Open("mysql", connectionString); err != nil {
 		r.ERROR.Fatal(err)

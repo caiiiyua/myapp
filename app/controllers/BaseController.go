@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"myapp/app/models"
+	"myapp/app/models/entity"
 	"strings"
 
 	"github.com/revel/revel"
@@ -10,6 +10,7 @@ import (
 // Base of all other controllers
 type BaseController struct {
 	*revel.Controller
+	XOrmTnController
 }
 
 func (c BaseController) GetUserId() string {
@@ -49,7 +50,7 @@ func (c BaseController) GetSession(k string) string {
 	return ""
 }
 
-func (c BaseController) SetSession(u models.User) {
+func (c BaseController) SetSession(u entity.User) {
 	if u.Id >= 0 {
 		c.Session["UserId"] = string(u.Id)
 		c.Session["Username"] = u.Username

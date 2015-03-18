@@ -22,7 +22,7 @@ func (a Auth) Logout() revel.Result {
 }
 
 func (a Auth) Login() revel.Result {
-	return a.Render()
+	return a.RenderTemplate("home/login.html")
 }
 
 func (a Auth) DoLogin() revel.Result {

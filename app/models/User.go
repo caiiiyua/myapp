@@ -1,42 +1,34 @@
 package models
 
-import "time"
+import (
+	"log"
+	"myapp/app/models/entity"
 
-type User struct {
-	Id         int64     `db:"id" json:"id"`
-	Username   string    `db:"name" json:"name"`
-	Name       string    `db:"Name" json:"Name"`
-	Email      string    `db:"email json:email`
-	Mobile     string    `db:"mobilephone" json:"mobilephone"`
-	Card       string    `db:"cardno" json:"cardno"`
-	Verified   bool      `db:"verified" json:"verified"`
-	CreateTime time.Time `db:"createtime" json:"createtime"`
+	"github.com/go-xorm/xorm"
+)
+
+type UserService interface {
+	Total() int64
+	ListUsers() []entity.User
 }
 
-type UserAccount struct {
-	Id            int64
-	UserId        int64
-	Card          string
-	SaveAmount    int64
-	ConsumeAmount int64
-	ConsumeCount  int64
-
-	LastConsumeTime time.Time
+func DefaultUserService(session *xorm.Session) UserService {
+	return &defaultUserService{session}
 }
 
-type UserAddress struct {
-	Id       int64
-	UserId   int64
-	Address  string
-	Street   string
-	City     string
-	PostCode string
+type defaultUserService struct {
+	session *xorm.Session
 }
 
-type UserItem struct {
-	Id     int64
-	UserId int64
-	Card   string
-	ItemId int64
-	Qty    int64
+func (this *defaultUserService) Total() int64 {
+	ret, err := this.session.Count(&entity.User{})
+	if err != nil {
+		log.Println("get count failed:", err)
+	}
+	return ret
+}
+
+func (this *defaultUserService) ListUsers() (users []entity.User) {
+	this.session.Find(&users)
+	return
 }
