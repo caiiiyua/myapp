@@ -1,8 +1,11 @@
 package app
 
 import (
+	"time"
+
 	"github.com/go-xorm/xorm"
 	"github.com/revel/revel"
+	"github.com/revel/revel/cache"
 )
 
 var (
@@ -24,6 +27,20 @@ func init() {
 		revel.InterceptorFilter,       // Run interceptors around the action.
 		revel.CompressFilter,          // Compress the result.
 		revel.ActionInvoker,           // Invoke the action.
+	}
+
+	revel.TemplateFuncs["webTitle"] = func(prefix string) (webTitle string) {
+		const KEY = "cache.web.title"
+		if err := cache.Get(KEY, &webTitle); err != nil {
+			webTitle = ForceGetConfig("web.title")
+			go cache.Set(KEY, webTitle, 24*30*time.Hour)
+		}
+		return
+	}
+
+	revel.TemplateFuncs["logined"] = func(session revel.Session) bool {
+		v, e := session["user"]
+		return e == true && v != ""
 	}
 
 	// register startup functions with OnAppStart

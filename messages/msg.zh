@@ -23,7 +23,7 @@ submit=提交
 
 # Pages
 home=主页
-app=MyApp
+app=爱奶瓶
 about=关于
 
 # Register
@@ -43,3 +43,7 @@ updatePasswordSuccessRedirectToLogin=修改成功, 正在跳转到登录页
 inputPassword2=请再次输入密码
 confirmPassword=两次密码输入不一致
 notGoodPassword=密码至少6位
+
+# Login/Logout
+welcome=你好, 
+logout=注销

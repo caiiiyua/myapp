@@ -73,6 +73,14 @@
 	<h2>UserInfo</h2>
 	<div class="row">
 		<div class="hero-text">
+			<p>
+				{{msg . "login"}}? {{logined .session}}
+				{{if logined .session}}
+					{{msg . "welcome"}} {{.session.user}} <a href="/logout" title="logout">{{msg . "logout"}}</a>
+				{{else}}
+					<a href="/login">{{msg . "login"}}</a>
+				{{end}}
+			</p>
 			<h1>It Works! Version: {{.version}}</h1>
 			<p>total users: {{.users_count}}</p>
 			<table class="table">

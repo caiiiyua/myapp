@@ -23,7 +23,7 @@ submit=Submit
 
 # Pages
 home=Home
-app=MyApp
+app=iNaiPing
 about=About
 
 # Register
@@ -42,3 +42,7 @@ updatePasswordSuccessRedirectToLogin=update password success and redirect to log
 inputPassword2=Please input your password again
 confirmPassword=Please confirm your password
 notGoodPassword=Tt's not a good password, the length is at least 6
+
+# Login/Logout
+welcome=Welcome, 
+logout=Log out

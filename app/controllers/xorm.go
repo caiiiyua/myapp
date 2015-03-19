@@ -87,10 +87,10 @@ var InitDB func() = func() {
 	app.Engine.SetTableMapper(core.NewPrefixMapper(core.SnakeMapper{}, "t_"))
 	app.Engine.DropTables("t_user")
 
-	err = app.Engine.Sync2(new(entity.User))
+	err = app.Engine.Sync2(new(entity.User), new(entity.UserRole), new(entity.UserLevel),
+		new(entity.Location), new(entity.UserDetail), new(entity.UserItem))
 	if err != nil {
 		log.Fatal("Sync2 with error:", err)
-
 	}
 
 	// do init
@@ -122,17 +122,9 @@ func tryInitData() {
 }
 
 func driverInfoFromConfig() (driver, spec string) {
-	var exist bool
-	driver, exist = revel.Config.String("db.driver")
-	if !exist {
-		log.Println("driver does not exist")
-	}
+	driver = app.ForceGetConfig("db.driver")
 	log.Println("db driver:", driver)
-
-	spec, exist = revel.Config.String("db.spec")
-	if !exist {
-		log.Println("spec does not exist")
-	}
+	spec = app.ForceGetConfig("db.spec")
 	log.Println("db sepc:", hidePassword(spec))
 	return
 }
