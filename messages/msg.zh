@@ -27,6 +27,7 @@ app=爱奶瓶
 about=关于
 
 # Register
+registerSuccessAndSendValidationEmail=注册成功, 验证邮件已发送到
 registerSuccessAndRdirectToNote=注册成功, 正在跳转...
 userHasBeenRegistered=%s已被注册
 

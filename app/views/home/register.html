@@ -9,7 +9,8 @@
 		<h1 id="logo">{{msg . "app"}}</h1>
 		<div id="boxForm">
 			<div id="boxHeader">{{msg . "register"}}</div>
-			<form>
+<!-- 			<p class="text-center" id="registerText" type="hidden">{{msg . "registerSuccessAndSendValidationEmail"}} <a href="{{.emailProvider}}">{{.email}}</a></p> -->
+			<form id="registerForm">
 				<div class="alert alert-danger" id="loginMsg"></div> 
 				<input id="from" type="hidden" value="{{.from}}" />
 				<div class="form-group"> 
@@ -106,9 +107,11 @@ $(function() {
 			$("#registerBtn").html("{{msg . "register"}}").removeClass("disabled");
 			// return;
 			if(e.Ok) {
+				showMsg(String(e.Item.Username) + "<" + e.Item.Email + ">", "email")
 				$("#registerBtn").html("{{msg . "registerSuccessAndRdirectToNote"}}");
-				var from = $("#from").val() || "/items";
-				location.href = from;
+				var from = $("#from").val() || "/index";
+				// location.href = from;
+				redirect(from, 2000)
 			} else {
 				showMsg(e.Msg, "email");
 			}
@@ -118,6 +121,11 @@ $(function() {
 		// var from = $("#from").val() || "/items";
 		// location.href = from;
 	});
+	function redirect(link, delay) {
+		setTimeout(function() {
+			location.href = link
+		}, delay)
+	}
 });
 </script>
 </body>

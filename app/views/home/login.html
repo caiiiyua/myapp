@@ -118,11 +118,12 @@ $(function() {
 		$("#loginBtn").html("{{msg . "logining"}}...").addClass("disabled");
 		// hideMsg();
 		
-		$.post("/doLogin", {email: email, pwd: pwd, captcha: $("#captcha").val()}, function(e) {
+		$.post("/login", {email: email, pwd: pwd, captcha: $("#captcha").val()}, function(e) {
 			$("#loginBtn").html("{{msg . "login"}}").removeClass("disabled");
 			if(e.Ok) {
 				$("#loginBtn").html("{{msg . "loginSuccess"}}...");
-				var from = $("#from").val() || "{{.noteUrl}}" || "/note";
+				// var from = $("#from").val() || "{{.noteUrl}}" || "/note";
+				var from = e.Next.Link || "/index"
 				location.href = from;
 			} else {
 				if(e.Item && $.trim($("#captchaContainer").text()) == "") {

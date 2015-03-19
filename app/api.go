@@ -8,6 +8,12 @@ type Api struct {
 	Id   string
 	List interface{}
 	Item interface{}
+	Next NextJson
+}
+
+type NextJson struct {
+	Name string
+	Link string
 }
 
 func NewResp() Api {

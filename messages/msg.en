@@ -27,6 +27,7 @@ app=iNaiPing
 about=About
 
 # Register
+registerSuccessAndSendValidationEmail=Register sucesss, confirmation Email has been sent to
 registerSuccessAndRdirectToNote=Register success, redirecting...
 userHasBeenRegistered=%s has been registered
 

@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"log"
 	"myapp/app"
+	"myapp/app/controllers/api"
 
 	"github.com/revel/revel"
 )
@@ -11,17 +13,28 @@ type Auth struct {
 }
 
 func (a Auth) Register() revel.Result {
-
+	if v, ok := a.Session["user"]; ok {
+		log.Println("register has session:", v)
+	}
 	return a.RenderTemplate("home/register.html")
 }
 
 func (a Auth) DoRegister() revel.Result {
-	return a.RenderJson(app.NewOk())
+	ok := app.NewOk()
+	ret := api.RigisterResponse{}
+	ret.Username = "hello"
+	ret.EmailProvider = "http://mail.qq.com"
+	ret.Email = "hello@qq.com"
+	ok.Item = ret
+	a.Session["user"] = ret.Username
+	log.Println("set register session:", a.Session)
+	return a.RenderJson(ok)
 	// return a.Redirect("/items")
 }
 
 func (a Auth) Logout() revel.Result {
-	return a.Render()
+	delete(a.Session, "user")
+	return a.RenderTemplate("home/index.html")
 }
 
 func (a Auth) Login() revel.Result {
@@ -29,5 +42,9 @@ func (a Auth) Login() revel.Result {
 }
 
 func (a Auth) DoLogin() revel.Result {
-	return a.Render()
+	ok := app.NewOk()
+	ok.Next = app.NextJson{"href", "/index"}
+	a.Session["user"] = "hello"
+	log.Println("set register session:", a.Session, "with resp:", ok)
+	return a.RenderJson(ok)
 }
