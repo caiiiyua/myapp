@@ -9,11 +9,11 @@ type UserCategory struct {
 
 type User struct {
 	Id              int64  `db:"id" json:"id"`
-	Username        string `db:"name" json:"name" xorm:"unique"`
+	Username        string `db:"name" json:"name"`
 	CryptedPassword string `json:"-" xorm:"varchar(64)"`
 	Name            string `db:"Name" json:"Name" xorm:"varchar(100)"`
 	Email           string `db:"email" json:"email" xorm:varchar(100)`
-	Mobile          string `db:"mobilephone" json:"mobile_phone" xorm:"varchar(100) unique index"`
+	Mobile          string `db:"mobilephone" json:"mobile_phone" xorm:"varchar(100) not null index"`
 	CardId          string `db:"CardId" json:"card_id" xorm:"varchar(64) unique index"`
 	Address         string `db:"address" json:"addr"`
 	Status          string `db:"status" json:"status"`

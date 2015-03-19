@@ -5,3 +5,4 @@ routes/
 *.bak
 *.pdf
 .gitignore
+*.csv

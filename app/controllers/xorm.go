@@ -35,7 +35,7 @@ func (x *XOrmController) Begin() revel.Result {
 	return nil
 }
 
-func (x *XOrmTnController) Beign() revel.Result {
+func (x *XOrmTnController) Begin() revel.Result {
 	log.Println("Tn Begin .....")
 	if app.Engine == nil {
 		log.Println("App.Engine can not be nil")
@@ -85,6 +85,7 @@ var InitDB func() = func() {
 	app.Engine.ShowDebug = true
 
 	app.Engine.SetTableMapper(core.NewPrefixMapper(core.SnakeMapper{}, "t_"))
+	app.Engine.DropTables("t_user")
 
 	err = app.Engine.Sync2(new(entity.User))
 	if err != nil {
@@ -97,7 +98,27 @@ var InitDB func() = func() {
 }
 
 func tryInitData() {
-
+	var acts []app.Account
+	acts = app.ImportAccounts()
+	log.Println("accounts:", len(acts))
+	users := []entity.User{}
+	for _, act := range acts {
+		user := entity.User{}
+		user.CardId = act.CardId
+		user.Name = act.Name
+		user.Mobile = act.Mobile
+		users = append(users, user)
+	}
+	for _, user := range users {
+		if len(user.CardId) <= 0 || len(user.CardId) > 7 {
+			continue
+		}
+		// log.Println(user)
+		_, err := app.Engine.Insert(&user)
+		if err != nil {
+			log.Println(err)
+		}
+	}
 }
 
 func driverInfoFromConfig() (driver, spec string) {

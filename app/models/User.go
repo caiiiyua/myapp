@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"log"
 	"myapp/app/models/entity"
 
@@ -21,7 +22,12 @@ type defaultUserService struct {
 }
 
 func (this *defaultUserService) Total() int64 {
-	ret, err := this.session.Count(&entity.User{})
+	s := this.session
+	if s != nil {
+		fmt.Println("session is valid")
+	}
+	fmt.Println("session is", s)
+	ret, err := s.Count(&entity.User{})
 	if err != nil {
 		log.Println("get count failed:", err)
 	}
