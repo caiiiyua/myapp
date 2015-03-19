@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"myapp/app"
+
 	"github.com/revel/revel"
 )
 
@@ -14,7 +16,8 @@ func (a Auth) Register() revel.Result {
 }
 
 func (a Auth) DoRegister() revel.Result {
-	return a.Redirect("/items")
+	return a.RenderJson(app.NewOk())
+	// return a.Redirect("/items")
 }
 
 func (a Auth) Logout() revel.Result {

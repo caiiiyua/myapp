@@ -43,7 +43,7 @@
 		<a href="/index">{{msg . "home"}}</a>
 	</p>
 	<p>
-		<a href="/index">leanote</a> © 2014
+		<a href="/index">{{msg . "app"}}</a> © 2015
 	</p>
 </div>
 
@@ -102,21 +102,21 @@ $(function() {
 		
 		var iu = "{{.iu}}";
 		
-		// $.post("/register", {email: email, pwd: pwd, iu: iu}, function(e) {
-		// 	$("#registerBtn").html("{{msg . "register"}}").removeClass("disabled");
-		// 	return;
-		// 	if(e.Ok) {
-		// 		$("#registerBtn").html("{{msg . "registerSuccessAndRdirectToNote"}}");
-		// 		var from = $("#from").val() || "{{.noteUrl}}" || "/note";
-		// 		location.href = from;
-		// 	} else {
-		// 		showMsg(e.Msg, "email");
-		// 	}
-		// });
-		$.post("/register", {email: email, pwd: pwd, iu: iu});
-		$("#registerBtn").html("{{msg . "registerSuccessAndRdirectToNote"}}");
-		var from = $("#from").val() || "/items";
-		location.href = from;
+		$.post("/register", {email: email, pwd: pwd, iu: iu}, function(e) {
+			$("#registerBtn").html("{{msg . "register"}}").removeClass("disabled");
+			// return;
+			if(e.Ok) {
+				$("#registerBtn").html("{{msg . "registerSuccessAndRdirectToNote"}}");
+				var from = $("#from").val() || "/items";
+				location.href = from;
+			} else {
+				showMsg(e.Msg, "email");
+			}
+		});
+		// $.post("/register", {email: email, pwd: pwd, iu: iu});
+		// $("#registerBtn").html("{{msg . "registerSuccessAndRdirectToNote"}}");
+		// var from = $("#from").val() || "/items";
+		// location.href = from;
 	});
 });
 </script>
