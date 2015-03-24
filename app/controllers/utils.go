@@ -49,8 +49,17 @@ func sendMail(subject, content, to string, html bool) {
 	} else {
 		mail.SetBody("text/plain", content)
 	}
-	provider := gomail.NewMailer("smtp.163.com", "ckjacket", "ck8568", 587)
+	provider := gomail.NewMailer("smtp.163.com", "mediatek_cd", "mtkcd100", 587)
 	if err := provider.Send(mail); err != nil {
 		utils.AssertNoError(err, "Send activation mail failed")
 	}
+}
+
+// SendMail for activation mail
+func SendMail(subject, content, to string) {
+	sendMail(subject, content, to, true)
+}
+
+func SendMailTextPlain(subject, content, to string) {
+	sendMail(subject, content, to, false)
 }

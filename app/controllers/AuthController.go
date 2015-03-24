@@ -5,6 +5,7 @@ import (
 	"myapp/app"
 	"myapp/app/controllers/api"
 
+	"github.com/dchest/captcha"
 	"github.com/revel/revel"
 )
 
@@ -16,6 +17,12 @@ func (a Auth) Register() revel.Result {
 	if v, ok := a.Session["user"]; ok {
 		log.Println("register has session:", v)
 	}
+	// Captcha := struct {
+	// 	CaptchaId string
+	// }{
+	// 	captcha.New(),
+	// }
+	// a.RenderArgs["Captcha"] = Captcha
 	return a.RenderTemplate("home/register.html")
 }
 
@@ -38,8 +45,15 @@ func (a Auth) Logout() revel.Result {
 }
 
 func (a Auth) Login() revel.Result {
-	a.RenderArgs["needCaptcha"] = "true"
+	// a.RenderArgs["needCaptcha"] = "true"
 	a.RenderArgs["openRegister"] = "true"
+	Captcha := struct {
+		CaptchaId string
+	}{
+		captcha.New(),
+	}
+	a.RenderArgs["Captcha"] = Captcha
+	log.Println("captchaId:", Captcha.CaptchaId)
 	return a.RenderTemplate("home/login.html")
 }
 

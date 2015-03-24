@@ -6,3 +6,4 @@ routes/
 *.pdf
 .gitignore
 *.csv
+*.sublime*

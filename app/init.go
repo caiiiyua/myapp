@@ -1,9 +1,12 @@
 package app
 
 import (
+	"log"
 	"myapp/app/utils"
+	"net/http"
 	"time"
 
+	"github.com/dchest/captcha"
 	"github.com/go-xorm/xorm"
 	"github.com/revel/revel"
 	"github.com/revel/revel/cache"
@@ -13,7 +16,26 @@ var (
 	Engine *xorm.Engine
 )
 
+const (
+	CaptchaW = 120
+	CaptchaH = 40
+)
+
 func init() {
+
+	// init revel filters
+	initRevelFilters()
+	// init revel template functions
+	initRevelTemplateFuncs()
+
+	// register startup functions with OnAppStart
+	// ( order dependent )
+	revel.OnAppStart(initHandlers)
+	// revel.OnAppStart(InitDB)
+	// revel.OnAppStart(FillCache)
+}
+
+func initRevelFilters() {
 	// Filters is the default set of global filters.
 	revel.Filters = []revel.Filter{
 		revel.PanicFilter,             // Recover from panics and display an error page instead.
@@ -29,7 +51,9 @@ func init() {
 		revel.CompressFilter,          // Compress the result.
 		revel.ActionInvoker,           // Invoke the action.
 	}
+}
 
+func initRevelTemplateFuncs() {
 	revel.TemplateFuncs["webTitle"] = func(prefix string) (webTitle string) {
 		const KEY = "cache.web.title"
 		if err := cache.Get(KEY, &webTitle); err != nil {
@@ -43,11 +67,23 @@ func init() {
 		v, e := session["user"]
 		return e == true && v != ""
 	}
+}
 
-	// register startup functions with OnAppStart
-	// ( order dependent )
-	// revel.OnAppStart(InitDB)
-	// revel.OnAppStart(FillCache)
+func initHandlers() {
+	var (
+		serveMux     = http.NewServeMux()
+		revelHandler = revel.Server.Handler
+	)
+	serveMux.Handle("/", revelHandler)
+	// ch := CaptchaHandler{captchaServer: captcha.Server(CaptchaW, CaptchaH)}
+	serveMux.Handle("/captcha/", http.HandlerFunc(CaptchaHanlder))
+	revel.Server.Handler = serveMux
+
+}
+
+var CaptchaHanlder = func(w http.ResponseWriter, r *http.Request) {
+	log.Println("CaptchaHandler handling...")
+	captcha.Server(CaptchaW, CaptchaH).ServeHTTP(w, r)
 }
 
 // TODO turn this into revel.HeaderFilter

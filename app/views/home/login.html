@@ -1,13 +1,15 @@
 {{template "home/header_box.html" .}}
 
-<!-- 验证码 -->
+<!-- 验证码
 <script type="text/x-jsrender" id="tCaptcha">
-	<div class="form-group"> 
-		<label class="control-label">{{msg . "captcha"}}</label>
-	    <input type="text" class="form-control" id="captcha" name="captcha">
-	    <a id="reloadCaptcha" title="{{msg . "reloadCaptcha"}}" onclick="$('#captchaImage').attr('src', '/captcha/get?' + ((new Date()).getTime()))"><img src="/captcha/get" id="captchaImage"/></a>
+	<div class="form-group" id="captchaCtrl">
+	<label class="control-label">{{msg . "captchalabel"}}</label>
+	<input type="text" class="form-control" id="captcha" name="captcha" placeholder={{msg . "inputCaptcha"}}>
+	<input type="hidden" name="captchaId" value="{{.Captcha.CaptchaId}}">
+	<img id="captchaImg" src="/captcha/{{.Captcha.CaptchaId}}.png" alt={{.Captcha.CaptchaId}}>
+	<a href="#" onclick="freshCaptcha();">{{msg . "reloadCaptcha"}}</a>
 	</div>
-</script>
+</script> -->
 <section id="box"  class="animated fadeInUp">
 	<!--
 	<div>
@@ -18,7 +20,7 @@
 		<h1 id="logo">{{msg . "app"}}</h1>
 		<div id="boxForm">
 			<div id="boxHeader">{{msg . "login"}}</div>
-			<form>
+			<form id="RigisiterForm">
 				<div class="alert alert-danger" id="loginMsg"></div>
 				<input id="from" type="hidden" value="{{.from}}" />
 				<div class="form-group">
@@ -31,7 +33,13 @@
 				</div>
 				
 				<div id="captchaContainer">
-					
+					<div class="form-group" id="captchaCtrl">
+						<label class="control-label">{{msg . "captchalabel"}}</label>
+						<input type="text" class="form-control" id="captcha" name="captcha">
+						<input type="hidden" name="captchaId" value="{{.Captcha.CaptchaId}}">
+						<img id="captchaImg" src="/captcha/{{.Captcha.CaptchaId}}.png" alt={{.Captcha.CaptchaId}}>
+						<a href="#" onclick="freshCaptcha();">{{msg . "reloadCaptcha"}}</a>
+					</div>
 				</div>
 				
 				<div class="clearfix">
@@ -69,7 +77,7 @@
 	</p>
 </div>
 
-<script src="/js/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <script>
@@ -93,6 +101,7 @@ $(function() {
 	function hideMsg() {
 		$("#loginMsg").hide();
 	}
+
 	$("#loginBtn").click(function(e){
 		e.preventDefault();
 		var email = $("#email").val();
@@ -111,14 +120,15 @@ $(function() {
 				return;
 			}
 		}
-		if(needCaptcha && !captcha) {
+		// if(needCaptcha && !captcha) {
+		if(!captcha)
 			showMsg("{{msg . "inputCaptcha"}}", "captcha");
 			return;
 		}
 		
 		$("#loginBtn").html("{{msg . "logining"}}...").addClass("disabled");
 		// hideMsg();
-		
+
 		$.post("/login", {email: email, pwd: pwd, captcha: $("#captcha").val()}, function(e) {
 			$("#loginBtn").html("{{msg . "login"}}").removeClass("disabled");
 			if(e.Ok) {

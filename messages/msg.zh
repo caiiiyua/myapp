@@ -20,7 +20,11 @@ loginSuccess=登录成功, 正在跳转
 ing=正在处理
 use = 使用
 submit=提交
-captcha=验证码
+
+# Captcha
+captchalabel=验证码
+reloadCaptcha=看不清? 换一个!
+inputCaptcha=请输入验证码
 
 # Pages
 home=主页
