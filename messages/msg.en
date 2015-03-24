@@ -20,6 +20,7 @@ loginSuccess=login success
 ing=processing
 use = Use
 submit=Submit
+captcha=Verify code
 
 # Pages
 home=Home

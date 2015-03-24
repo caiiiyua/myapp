@@ -1,6 +1,7 @@
 package app
 
 import (
+	"myapp/app/utils"
 	"time"
 
 	"github.com/go-xorm/xorm"
@@ -32,7 +33,7 @@ func init() {
 	revel.TemplateFuncs["webTitle"] = func(prefix string) (webTitle string) {
 		const KEY = "cache.web.title"
 		if err := cache.Get(KEY, &webTitle); err != nil {
-			webTitle = ForceGetConfig("web.title")
+			webTitle = utils.ForceGetConfig("web.title")
 			go cache.Set(KEY, webTitle, 24*30*time.Hour)
 		}
 		return

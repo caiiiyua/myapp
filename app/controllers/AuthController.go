@@ -38,6 +38,8 @@ func (a Auth) Logout() revel.Result {
 }
 
 func (a Auth) Login() revel.Result {
+	a.RenderArgs["needCaptcha"] = "true"
+	a.RenderArgs["openRegister"] = "true"
 	return a.RenderTemplate("home/login.html")
 }
 

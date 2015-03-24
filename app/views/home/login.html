@@ -3,7 +3,7 @@
 <!-- 验证码 -->
 <script type="text/x-jsrender" id="tCaptcha">
 	<div class="form-group"> 
-		<label class="control-label">"capcha"</label>
+		<label class="control-label">{{msg . "captcha"}}</label>
 	    <input type="text" class="form-control" id="captcha" name="captcha">
 	    <a id="reloadCaptcha" title="{{msg . "reloadCaptcha"}}" onclick="$('#captchaImage').attr('src', '/captcha/get?' + ((new Date()).getTime()))"><img src="/captcha/get" id="captchaImage"/></a>
 	</div>
@@ -50,10 +50,11 @@
 				
 				{{if .openRegister}}
 				<a href="/register" class="btn btn-default btn-block">{{msg . "register"}}</a>
-				{{msg . "or"}}
+				<!-- {{msg . "or"}} -->
 				{{end}}
 				
-				<a id="loginBtn" href="/register" class="btn btn-default btn-block">{{msg . "register"}}</a>
+				<!-- 3rd party login -->
+				<!-- <a id="loginBtn" href="/register" class="btn btn-default btn-block">{{msg . "register"}}</a> -->
 			</form>	
 		</div>
     </div>

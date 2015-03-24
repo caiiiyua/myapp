@@ -5,6 +5,7 @@ import (
 	"log"
 	"myapp/app"
 	"myapp/app/models/entity"
+	"myapp/app/utils"
 	"regexp"
 
 	"github.com/go-xorm/core"
@@ -122,9 +123,9 @@ func tryInitData() {
 }
 
 func driverInfoFromConfig() (driver, spec string) {
-	driver = app.ForceGetConfig("db.driver")
+	driver = utils.ForceGetConfig("db.driver")
 	log.Println("db driver:", driver)
-	spec = app.ForceGetConfig("db.spec")
+	spec = utils.ForceGetConfig("db.spec")
 	log.Println("db sepc:", hidePassword(spec))
 	return
 }
