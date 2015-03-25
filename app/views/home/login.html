@@ -191,28 +191,28 @@ $(document).ready(function() {
 			}
 		}
 		// if(needCaptcha && !captcha) {
-		if(!captcha)
+		if (!captcha) {
 			showMsg("{{msg . "inputCaptcha"}}", "captcha");
 			return;
 		}
 		$("#loginBtn").html("{{msg . "logining"}}...").addClass("disabled");
 
-		// $.post("/login", {email: email, pwd: pwd, captcha: $("#captcha").val()}, function(e) {
-		// 	$("#loginBtn").html("{{msg . "login"}}").removeClass("disabled");
-		// 	if(e.Ok) {
-		// 		$("#loginBtn").html("{{msg . "loginSuccess"}}...");
-		// 		// var from = $("#from").val() || "{{.noteUrl}}" || "/note";
-		// 		var from = e.Next.Link || "/index"
-		// 		location.href = from;
-		// 	} else {
-		// 		if(e.Item && $.trim($("#captchaContainer").text()) == "") {
-		// 			$("#captchaContainer").html($("#tCaptcha").html());
-		// 			needCaptcha = true
-		// 		}
-				
-		// 		showMsg(e.Msg);
-		// 	}
-		// });
+		$.post("/login", {email: email, pwd: pwd, captcha: $("#captcha").val()}, function(e) {
+			$("#loginBtn").html("{{msg . "login"}}").removeClass("disabled");
+			if(e.Ok) {
+				$("#loginBtn").html("{{msg . "loginSuccess"}}...");
+				// var from = $("#from").val() || "{{.noteUrl}}" || "/note";
+				var from = e.Next.Link || "/index"
+				location.href = from;
+			} else {
+				if(e.Item && $.trim($("#captchaContainer").text()) == "") {
+					$("#captchaContainer").html($("#tCaptcha").html());
+					needCaptcha = true
+				}
+				// show msg 'input the correct validation code'
+				showMsg(e.Msg);
+			}
+		});
 	});
 });
 </script>
