@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"myapp/app/models"
 	"myapp/app/models/entity"
 	"strings"
 
@@ -11,6 +12,10 @@ import (
 type BaseController struct {
 	*revel.Controller
 	XOrmTnController
+}
+
+func (c BaseController) userService() models.UserService {
+	return models.DefaultUserService(c.XOrmSession)
 }
 
 func (c BaseController) GetUserId() string {

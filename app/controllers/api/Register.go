@@ -7,8 +7,8 @@ type RigisterRequest struct {
 }
 
 type RigisterResponse struct {
-	Id            int64  `json: "uid"`
-	Username      string `json: "username"`
+	Id            int64  `json:"uid"`
+	Username      string `json:"username"`
 	EmailProvider string `json:"ep"`
 	Email         string `json:"email"`
 }

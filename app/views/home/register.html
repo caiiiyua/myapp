@@ -104,13 +104,20 @@ $(function() {
 			$("#registerBtn").html("{{msg . "register"}}").removeClass("disabled");
 			// return;
 			if(e.Ok) {
-				showMsg(String(e.Item.Username) + "<" + e.Item.Email + ">", "email")
+				showMsg(String(e.Item.Username), "email")
 				$("#registerBtn").html("{{msg . "registerSuccessAndRdirectToNote"}}");
 				var from = $("#from").val() || "/index";
 				// location.href = from;
 				redirectTo(from, 2000)
 			} else {
-				showMsg(e.Msg, "email");
+				switch(e.Msg) {
+					case "email":
+						showMsg("{{msg . "wrongUsernameOrPassword"}}", "email");
+						break;
+					case "exists":
+						showMsg("{{msg . "userHasBeenRegistered" "test"}}", "email")
+				}
+				// showMsg(e.Msg, "email");
 			}
 		});
 		// $.post("/register", {email: email, pwd: pwd, iu: iu});

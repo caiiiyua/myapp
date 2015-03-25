@@ -16,7 +16,7 @@ type UserService interface {
 	Total() int64
 	ListUsers() []entity.User
 	// RegisterUser(username, password string) (entity.User, error)
-	RegisterUserByEmail(email, password string) (entity.User, error)
+	RegistUserByEmail(email, password string) (entity.User, error)
 	// RegisterUserByPhone(mobile, password string) (entity.User, error)
 	ExistsUserByEmail(email string) bool
 	// ExistsUserByPhone(mobile string) bool
@@ -50,7 +50,7 @@ func (this *defaultUserService) ListUsers() (users []entity.User) {
 	return
 }
 
-func (this *defaultUserService) RegisterUserByEmail(email, password string) (user entity.User, err error) {
+func (this *defaultUserService) RegistUserByEmail(email, password string) (user entity.User, err error) {
 	user.Email = email
 	user.CryptedPassword = password
 	user.ActivationCode = utils.Uuid()

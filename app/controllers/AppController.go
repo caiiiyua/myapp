@@ -18,6 +18,7 @@ type App struct {
 func (c *App) userService() models.UserService {
 	return models.DefaultUserService(c.XOrmSession)
 }
+
 func (c App) Index() revel.Result {
 	locale := c.SetLocale()
 	fmt.Println(locale)

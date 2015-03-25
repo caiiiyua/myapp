@@ -35,6 +35,11 @@ about=About
 registerSuccessAndSendValidationEmail=Register sucesss, confirmation Email has been sent to
 registerSuccessAndRdirectToNote=Register success, redirecting...
 userHasBeenRegistered=%s has been registered
+activationMail=Activation Mail
+activation=Activation
+activationSuccess=Activation success
+activateSuccessAndRdirect=Activation success, redirecting...
+activatedFailed=Activation Failed
 
 # Find password
 passwordTips=The length is at least 6

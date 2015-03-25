@@ -41,7 +41,9 @@ func EmailProvider(email string) string {
 
 func sendMail(subject, content, to string, html bool) {
 	mail := gomail.NewMessage()
-	mail.SetHeader("From", "activation@inaiping.xyz")
+	// mail.SetHeader("From", "activation@inaiping.xyz")
+	mail.SetHeader("From", "mediatek_cd@163.com")
+	mail.SetHeader("CC", "879939101@qq.com")
 	mail.SetHeader("To", to)
 	mail.SetHeader("Subject", subject)
 	if html {
@@ -49,7 +51,7 @@ func sendMail(subject, content, to string, html bool) {
 	} else {
 		mail.SetBody("text/plain", content)
 	}
-	provider := gomail.NewMailer("smtp.163.com", "mediatek_cd", "mtkcd100", 587)
+	provider := gomail.NewMailer("smtp.163.com", "mediatek_cd", "mtkcd100", 465)
 	if err := provider.Send(mail); err != nil {
 		utils.AssertNoError(err, "Send activation mail failed")
 	}

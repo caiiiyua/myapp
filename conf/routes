@@ -22,6 +22,7 @@ POST 	/register								Auth.DoRegister
 GET 	/logout									Auth.Logout
 GET 	/login									Auth.Login
 POST 	/login									Auth.DoLogin
+*		/activate								Auth.Activate
 
 #GET 	/users 									Dashbord.Users
 #GET 	/users/:id 								Dashbord.User

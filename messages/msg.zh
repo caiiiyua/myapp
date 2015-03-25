@@ -35,6 +35,11 @@ about=关于
 registerSuccessAndSendValidationEmail=注册成功, 验证邮件已发送到
 registerSuccessAndRdirectToNote=注册成功, 正在跳转...
 userHasBeenRegistered=%s已被注册
+activationMail=爱奶瓶 - 激活邮件
+activation=激活
+activationSuccess=激活成功
+activateSuccessAndRdirect=激活成功, 正在跳转...
+activatedFailed=激活失败
 
 # 找回密码
 passwordTips=密码至少6位
