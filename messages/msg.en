@@ -20,12 +20,11 @@ loginSuccess=login success
 ing=processing
 use = Use
 submit=Submit
-captchalabel=Verify code
 
 # Captcha
 captchalabel=Verify code
 reloadCaptcha=Reload
-inputCaptcha=Input your verification code
+inputCaptcha=Input correct verification code
 
 # Pages
 home=Home

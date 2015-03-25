@@ -108,7 +108,7 @@ $(function() {
 				$("#registerBtn").html("{{msg . "registerSuccessAndRdirectToNote"}}");
 				var from = $("#from").val() || "/index";
 				// location.href = from;
-				redirect(from, 2000)
+				redirectTo(from, 2000)
 			} else {
 				showMsg(e.Msg, "email");
 			}

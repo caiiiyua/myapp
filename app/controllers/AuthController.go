@@ -13,6 +13,20 @@ type Auth struct {
 	BaseController
 }
 
+func (a *Auth) checkAuth(login bool, ok *app.Api) bool {
+	if a.Validation.HasErrors() {
+		a.Validation.Keep()
+		a.FlashParams()
+		if login {
+			ok.Next = app.NextJson{"href", "/login"}
+		} else {
+			ok.Next = app.NextJson{"href", "/register"}
+		}
+		return false
+	}
+	return true
+}
+
 func (a Auth) Register() revel.Result {
 	if v, ok := a.Session["user"]; ok {
 		log.Println("register has session:", v)
@@ -26,7 +40,7 @@ func (a Auth) Register() revel.Result {
 	return a.RenderTemplate("home/register.html")
 }
 
-func (a Auth) DoRegister() revel.Result {
+func (a Auth) DoRegister(email, pwd, captcha, captchaId string) revel.Result {
 	ok := app.NewOk()
 	ret := api.RigisterResponse{}
 	ret.Username = "hello"
@@ -57,10 +71,33 @@ func (a Auth) Login() revel.Result {
 	return a.RenderTemplate("home/login.html")
 }
 
-func (a Auth) DoLogin() revel.Result {
+func (a Auth) DoLogin(email, pwd, validationCode, captchaId string) revel.Result {
+	log.Println("email:", email, "validationCode:", validationCode, "captchaId:", captchaId)
 	ok := app.NewOk()
-	ok.Next = app.NextJson{"href", "/index"}
-	a.Session["user"] = "hello"
+	ok.Ok = a.Validation.Required(captcha.VerifyString(captchaId, validationCode)).Ok
+	if !ok.Ok {
+		ok.Msg = "captcha"
+		return a.RenderJson(ok)
+	}
+	ok.Ok = a.Validation.Required(email).Ok
+	if !ok.Ok {
+		ok.Msg = "email"
+		return a.RenderJson(ok)
+	}
+	ok.Ok = a.Validation.Email(email).Ok
+	if !ok.Ok {
+		ok.Msg = "email"
+		return a.RenderJson(ok)
+	}
+
+	if !a.checkAuth(true, &ok) {
+		ok.Msg = "login"
+		ok.Ok = false
+	} else {
+		ok.Next = app.NextJson{"href", "/index"}
+		a.Session["user"] = "hello"
+	}
+
 	log.Println("set register session:", a.Session, "with resp:", ok)
 	return a.RenderJson(ok)
 }

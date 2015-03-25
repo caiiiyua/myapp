@@ -75,8 +75,8 @@ func initHandlers() {
 		revelHandler = revel.Server.Handler
 	)
 	serveMux.Handle("/", revelHandler)
-	// ch := CaptchaHandler{captchaServer: captcha.Server(CaptchaW, CaptchaH)}
-	serveMux.Handle("/captcha/", http.HandlerFunc(CaptchaHanlder))
+	// serveMux.Handle("/captcha/", http.HandlerFunc(CaptchaHanlder))
+	serveMux.Handle("/captcha/", captcha.Server(CaptchaW, CaptchaH))
 	revel.Server.Handler = serveMux
 
 }

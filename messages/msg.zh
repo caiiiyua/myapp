@@ -24,7 +24,7 @@ submit=提交
 # Captcha
 captchalabel=验证码
 reloadCaptcha=看不清? 换一个!
-inputCaptcha=请输入验证码
+inputCaptcha=请输入正确的验证码
 
 # Pages
 home=主页

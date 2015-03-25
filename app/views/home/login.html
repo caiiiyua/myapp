@@ -35,8 +35,8 @@
 				<div id="captchaContainer">
 					<div class="form-group" id="captchaCtrl">
 						<label class="control-label">{{msg . "captchalabel"}}</label>
-						<input type="text" class="form-control" id="captcha" name="captcha">
-						<input type="hidden" name="captchaId" value="{{.Captcha.CaptchaId}}">
+						<input type="text" class="form-control" id="captcha" name="validationCode">
+						<input id="captchaId" type="hidden" name="captchaId" value="{{.Captcha.CaptchaId}}">
 						<img id="captchaImg" src="/captcha/{{.Captcha.CaptchaId}}.png" alt={{.Captcha.CaptchaId}}>
 						<a href="#" onclick="freshCaptcha();">{{msg . "reloadCaptcha"}}</a>
 					</div>
@@ -177,6 +177,7 @@ $(document).ready(function() {
 		var email = $('#email').val()
 		var pwd = $('#pwd').val()
 		var captcha = $('#captcha').val()
+		var captchaId = $('#captchaId').val()
 		if(!email) {
 			showMsg("{{msg . "inputUsername"}}", "email");
 			return;
@@ -197,20 +198,27 @@ $(document).ready(function() {
 		}
 		$("#loginBtn").html("{{msg . "logining"}}...").addClass("disabled");
 
-		$.post("/login", {email: email, pwd: pwd, captcha: $("#captcha").val()}, function(e) {
+		$.post("/login", {email: email, pwd: pwd, validationCode: $("#captcha").val(), captchaId: captchaId}, function(e) {
 			$("#loginBtn").html("{{msg . "login"}}").removeClass("disabled");
 			if(e.Ok) {
 				$("#loginBtn").html("{{msg . "loginSuccess"}}...");
 				// var from = $("#from").val() || "{{.noteUrl}}" || "/note";
 				var from = e.Next.Link || "/index"
-				location.href = from;
+				redirectTo(from, 2000)
 			} else {
-				if(e.Item && $.trim($("#captchaContainer").text()) == "") {
-					$("#captchaContainer").html($("#tCaptcha").html());
-					needCaptcha = true
-				}
+				// if(e.Item && $.trim($("#captchaContainer").text()) == "") {
+				// 	$("#captchaContainer").html($("#tCaptcha").html());
+				// 	needCaptcha = true
+				// }
 				// show msg 'input the correct validation code'
-				showMsg(e.Msg);
+				switch(e.Msg) {
+					case "email":
+						showMsg("{{msg . "wrongUsernameOrPassword"}}", "email");
+						break;
+					case "captcha":
+						showMsg("{{msg . "inputCaptcha"}}", "captcha")
+				}
+				redirectTo("/login", 2000)
 			}
 		});
 	});
