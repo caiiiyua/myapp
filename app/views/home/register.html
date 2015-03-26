@@ -106,7 +106,7 @@ $(function() {
 			if(e.Ok) {
 				showMsg(String(e.Item.Username), "email")
 				$("#registerBtn").html("{{msg . "registerSuccessAndRdirectToNote"}}");
-				var from = $("#from").val() || "/index";
+				var from = $("#from").val() || "/activate";
 				// location.href = from;
 				redirectTo(from, 2000)
 			} else {

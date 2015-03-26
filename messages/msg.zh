@@ -39,7 +39,7 @@ activationMail=爱奶瓶 - 激活邮件
 activation=激活
 activationSuccess=激活成功
 activateSuccessAndRdirect=激活成功, 正在跳转...
-activatedFailed=激活失败
+activateFailed=激活失败
 
 # 找回密码
 passwordTips=密码至少6位
@@ -58,3 +58,12 @@ notGoodPassword=密码至少6位
 # Login/Logout
 welcome=你好, 
 logout=注销
+
+# Users
+usersCount=会员数量
+cardId=会员卡号
+name=会员姓名
+mobile=手机号
+verified=激活状态
+
+

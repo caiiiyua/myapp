@@ -24,7 +24,7 @@ GET 	/login									Auth.Login
 POST 	/login									Auth.DoLogin
 *		/activate								Auth.Activate
 
-#GET 	/users 									Dashbord.Users
+GET 	/users 									Admin.Users
 #GET 	/users/:id 								Dashbord.User
 GET     /inventory/                             App.Inventory
 

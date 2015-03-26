@@ -66,6 +66,10 @@ func (this *defaultUserService) ExistsUserByEmail(email string) bool {
 }
 
 func (this *defaultUserService) Activate(email, code string) (user entity.User, err error) {
+	if len(code) == 0 {
+		err = errors.New("Activation code invalid")
+		return
+	}
 	var users []entity.User
 	err = this.session.Where("email=? and activation_code=?", email, code).Find(&users)
 	if err != nil {

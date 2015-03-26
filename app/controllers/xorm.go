@@ -99,6 +99,11 @@ var InitDB func() = func() {
 }
 
 func tryInitData() {
+	total, err := app.Engine.Count(&entity.User{})
+	if total > 0 && err == nil {
+		revel.INFO.Println("total users:", total)
+		return
+	}
 	var acts []app.Account
 	acts = app.ImportAccounts()
 	log.Println("accounts:", len(acts))

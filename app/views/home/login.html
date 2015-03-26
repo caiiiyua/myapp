@@ -203,7 +203,11 @@ $(document).ready(function() {
 			if(e.Ok) {
 				$("#loginBtn").html("{{msg . "loginSuccess"}}...");
 				// var from = $("#from").val() || "{{.noteUrl}}" || "/note";
+
 				var from = e.Next.Link || "/index"
+				if (e.Msg == "admin") {
+					from = "/admin/users"
+				};
 				redirectTo(from, 2000)
 			} else {
 				// if(e.Item && $.trim($("#captchaContainer").text()) == "") {

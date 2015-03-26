@@ -115,7 +115,10 @@ func (a Auth) DoLogin(email, pwd, validationCode, captchaId string) revel.Result
 		ok.Ok = false
 	} else {
 		ok.Next = app.NextJson{"href", "/index"}
-		a.Session["user"] = "hello"
+		a.Session["user"] = email
+		if email == "879939101@qq.com" {
+			ok.Msg = "admin"
+		}
 	}
 
 	log.Println("set register session:", a.Session, "with resp:", ok)

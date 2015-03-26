@@ -1,0 +1,31 @@
+{{set . "title" "用户管理"}}
+{{template "home/header_box.html" .}}
+
+<section id="box" class="animated fadeInUp">
+	<h1 id="logo">用户管理</h1>
+
+	<div class="container">
+		 <div>{{msg . "usersCount"}}: {{.users_count}}</div>
+		 <table class="table">
+		 	<tr>
+		 		<th>{{msg . "cardId"}}</th>
+		 		<th>{{msg . "name"}}</th>
+		 		<th>{{msg . "email"}}</th>
+		 		<th>{{msg . "mobile"}}</th>
+		 		<th>{{msg . "verified"}}</th>
+		 	</tr>
+			{{range .users}}
+			<tr>
+				<td>{{.CardId}}</td>
+				<td>{{.Name}}</td>
+				<td>{{.Email}}</td>
+				<td>{{.Mobile}}</td>
+				<td>{{.Verified}}</td>
+			</tr>
+			{{end}}
+		</table>
+	</div>
+
+</section>
+
+{{template "home/footer_box.html" .}}

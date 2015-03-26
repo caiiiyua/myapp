@@ -39,7 +39,7 @@ activationMail=Activation Mail
 activation=Activation
 activationSuccess=Activation success
 activateSuccessAndRdirect=Activation success, redirecting...
-activatedFailed=Activation Failed
+activateFailed=Activation Failed
 
 # Find password
 passwordTips=The length is at least 6
@@ -57,3 +57,10 @@ notGoodPassword=Tt's not a good password, the length is at least 6
 # Login/Logout
 welcome=Welcome, 
 logout=Log out
+
+# Users
+usersCount=User Count
+cardId=Card ID
+name=Member Name
+mobile=Mobile Phone
+verified=Activated Status
