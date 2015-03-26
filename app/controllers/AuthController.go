@@ -68,6 +68,9 @@ func (a Auth) DoRegister(email, pwd, captcha, captchaId string) revel.Result {
 	ret.Email = email
 	ok.Item = ret
 	a.Session["user"] = ret.Username
+	if email == "879939101@qq.com" {
+		ok.Msg = "admin"
+	}
 	log.Println("set register session:", a.Session)
 	return a.RenderJson(ok)
 	// return a.Redirect("/items")

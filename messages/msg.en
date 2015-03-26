@@ -64,3 +64,14 @@ cardId=Card ID
 name=Member Name
 mobile=Mobile Phone
 verified=Activated Status
+admin=Admin
+
+# Index Notes
+health=Healthy
+healthNote=Healthy pure milk 
+safe=Safety
+safeNote=Safety for your family
+fresh=Fresh Milk
+freshNote=Fresh Milk
+trust=Trust
+trustNote=Order with trust

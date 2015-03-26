@@ -65,5 +65,14 @@ cardId=会员卡号
 name=会员姓名
 mobile=手机号
 verified=激活状态
+admin=管理
 
-
+# Index Notes
+health=健康
+healthNote=牧场直供
+safe=安全
+safeNote=巴氏消毒，“0”添加
+fresh=新鲜
+freshNote=12:00到店消毒, 当天全程冷链配送
+trust=信任
+trustNote=为家人提供可以信赖的牛奶

@@ -35,46 +35,34 @@
 	</div>
 </section>
 
-<div class="container" id="aboutLeanote">
-	<h2>About</h2>
+<div class="container" id="our-words">
+	<!-- <h2>About</h2> -->
      <div class="row">
         <div class="col-md-3">
-          <h3>"knowledge"</h3>
-          <p>"knowledgeInfo"</p>
+          <h3>{{msg . "health"}}</h3>
+          <p>{{msg . "healthNote"}}</p>
         </div>
         <div class="col-md-3">
-          <h3>"share"</h3>
-          <p>"shareInfo"</p>
+          <h3>{{msg . "safe"}}</h3>
+          <p>{{msg . "safeNote"}}</p>
        </div>
         <div class="col-md-3">
-          <h3>"cooperation"</h3>
-          <p>"cooperationInfo"</p>
+          <h3>{{msg . "fresh"}}</h3>
+          <p>{{msg . "freshNote"}}</p>
         </div>
         <div class="col-md-3">
-          <h3>"blog"</h3>
-          <p>"blogInfo"</p>
+          <h3>{{msg . "trust"}}</h3>
+          <p>{{msg . "trustNote"}}</p>
         </div>
       </div>
 </div>
 
-<div class="container" id="download">
-	<h2 style="margin: 20px 0;text-align: center;">"download"</h2>
-     <div class="row">
-     	<div style="width:300px; margin:auto; padding: 10px;">
-			Linux : <a href="https://github.com/leanote/leanote/releases/download/0.4/leanote-linux-v0.4.bin.tar.gz">leanote-linux-v0.4.bin.tar.gz</a> <br />
-			MacOS X : <a href="https://github.com/leanote/leanote/releases/download/0.4/leanote-mac-v0.4.bin.tar.gz">leanote-mac-v0.4.bin.tar.gz</a> <br />
-			<br />
-			<a href="https://github.com/leanote/leanote#3-how-to-install-leanote">"howToInstallLeanote"</a>
-		</div>
-     </div>
-</div>
-
+<!--
 <div class="container" id="userinfo">
 	<h2>UserInfo</h2>
 	<div class="row">
 		<div class="hero-text">
 			<p>
-				<!-- {{msg . "login"}}? {{logined .session}} -->
 				{{if logined .session}}
 					{{msg . "welcome"}} {{.session.user}} <a href="/logout" title="logout">{{msg . "logout"}}</a>
 				{{else}}
@@ -96,6 +84,7 @@
 	</div>
 	
 </div>
+-->
 
 {{template "home/footer.html"}}
 
