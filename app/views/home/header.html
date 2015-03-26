@@ -37,8 +37,17 @@ function log(o) {
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="/index#" target="body" class="smooth-scroll">Home</a></li>
 				<li><a href="/index#download" target="#about" class="smooth-scroll">About</a> </li>
-				<li><button id="loginBtns" type="button" class="btn btn-warning navbar-btn">Sign in</button></li>
-				<li><button id="loginBtns" type="button" class="btn btn-success navbar-btn">Sign up</button></li>
+				{{if logined .session}}
+
+				{{else}}
+					<li><button id="loginBtn" type="button" class="btn btn-warning navbar-btn">Sign in</button></li>
+					<li><button id="RegBtn" type="button" class="btn btn-success navbar-btn">Sign up</button></li>
+				{{end}}
+			</ul>
+			<ul class="nav navbar-nav">
+			{{if logined .session}}
+					{{msg . "welcome"}} {{.session.user}} <a href="/logout" title="logout">{{msg . "logout"}}</a>
+			{{end}}
 			</ul>
 		</div>
 	</div>
