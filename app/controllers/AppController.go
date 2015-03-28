@@ -26,7 +26,8 @@ func (c App) Index() revel.Result {
 	c.RenderArgs["users"] = c.userService().ListUsers()
 	c.RenderArgs["version"] = app.Version
 	//	return c.RenderTemplate("home/index_" + locale + ".html")
-	return c.RenderTemplate("home/index.html")
+	// return c.RenderTemplate("home/index.html")
+	return c.Render()
 }
 
 func (c App) Inventory() revel.Result {

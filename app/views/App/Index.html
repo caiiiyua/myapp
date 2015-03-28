@@ -1,16 +1,60 @@
-{{set . "title" "Home"}}
 {{template "header.html" .}}
+{{template "body_header.html" .}}
 
-<header class="hero-unit" style="background-color:#A9F16C">
-  <div class="container">
-    <div class="row">
-      <div class="hero-text">
-        <h1>It works!</h1>
-        <p>This is my first Go project:-)</p>
-      </div>
+<section>
+  <div class="header">
+    <h2>Myapp, this is a test app</h2>
+    <p>"halo Revel"</p>
+    <p>"good Go for Bootstrap"</p>
+    
+    <div>
+      <a class="btn btn-success" href="/register">Register</a> 
+      &nbsp;
+      &nbsp;
+      <a class="btn btn-warning" href="/login">Login</a>
+      &nbsp;
+      &nbsp;
+      <a class="btn btn-primary" href="/about">About</a> 
     </div>
   </div>
-</header>
+  
+  <div class="preview" style="position: relative;">
+    <div>
+      <div class="img-header">
+        <img src="/images/home/mac-btns.png"/>
+      </div>
+      <img src="/images/home/preview2.png" style="width: 750px;" />
+    </div>
+    <div class="mobile">
+      <div class="mobile-header">
+        <img src="/images/home/mac-dot.png" />
+      </div>
+      <img class="mobile-image" src="/images/home/mobile.png" />
+    </div>
+  </div>
+</section>
+
+<div class="container" id="our-words">
+  <!-- <h2>About</h2> -->
+     <div class="row">
+        <div class="col-md-3">
+          <h3>{{msg . "health"}}</h3>
+          <p>{{msg . "healthNote"}}</p>
+        </div>
+        <div class="col-md-3">
+          <h3>{{msg . "safe"}}</h3>
+          <p>{{msg . "safeNote"}}</p>
+       </div>
+        <div class="col-md-3">
+          <h3>{{msg . "fresh"}}</h3>
+          <p>{{msg . "freshNote"}}</p>
+        </div>
+        <div class="col-md-3">
+          <h3>{{msg . "trust"}}</h3>
+          <p>{{msg . "trustNote"}}</p>
+        </div>
+      </div>
+</div>
 
 <div class="container">
   <div class="row">

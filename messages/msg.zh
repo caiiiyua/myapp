@@ -66,6 +66,7 @@ name=会员姓名
 mobile=手机号
 verified=激活状态
 admin=管理
+myAccount=我的账户
 
 # Index Notes
 health=健康

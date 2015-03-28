@@ -1,11 +1,10 @@
-{{set . "title" "用户管理"}}
+{{set . "title" "我的账户"}}
 {{template "header.html" .}}
-{{template "body_header.html" .}}
 
 <div class="header">
 </div>
 <section id="box" class="animated fadeInUp">
-	<h1 id="logo">用户管理</h1>
+	<h1 id="logo">我的账户</h1>
 
 	<div class="container">
 		 <div>{{msg . "usersCount"}}: {{.users_count}}</div>
@@ -31,4 +30,4 @@
 
 </section>
 
-{{template "home/footer.html" .}}
+{{template "footer.html" .}}

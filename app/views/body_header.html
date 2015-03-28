@@ -1,0 +1,39 @@
+<header>
+	<nav id="headerContainer" style="background-color:#fff" class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/index">
+          <img src="/images/logo/leanote_black.png" id="" title="Hello, Myapp"/>
+        </a>
+
+
+      </div> 
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+
+          {{if logined .session}}
+            <li><a href="">{{msg . "welcome"}} {{.session.user}}</a></li>
+            <li><a href="/logout" title="logout">{{msg . "logout"}}</a></li>
+          	<li><a href='{{url "User.Account"}}'>{{msg . "myAccount"}}</a></li>
+
+          {{else}}
+            <!-- <li><button id="loginBtn" type="button" class="btn btn-warning navbar-btn">Sign in</button></li>
+            <li><button id="RegBtn" type="button" class="btn btn-success navbar-btn">Sign up</button></li> -->
+            <li><a href="/index" target="body" class="smooth-scroll">{{msg . "home"}}</a></li>
+            <li><a href="/index#our-words" target="#our-words" class="smooth-scroll">{{msg . "about"}}</a> </li>
+            <li><a href="/register" title="register">{{msg . "register"}}</a></li>
+            <li><a href="/login" title="login">{{msg . "login"}}</a></li>
+          {{end}}
+          {{if isAdmin .session}}
+          	<li><a href='{{url "Admin.Index"}}'>{{msg . "admin"}}</a></li>
+          {{end}}
+        </ul>
+        <!-- <ul class="nav navbar-nav">
+        {{if logined .session}}
+            {{msg . "welcome"}} {{.session.user}} <a href="/logout" title="logout">{{msg . "logout"}}</a>
+        {{end}}
+        </ul> -->
+      </div>
+    </div>
+  </nav>
+</header>

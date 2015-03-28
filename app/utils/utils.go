@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
@@ -321,4 +322,16 @@ func TypeOfTarget(v interface{}) (typ reflect.Type) {
 
 func StringToInt64(s string) (int64, error) {
 	return strconv.ParseInt(s, 10, 64)
+}
+
+// render template/html to strng
+func RenderTemplateToString(templatePath string, data interface{}) string {
+	t, err := revel.MainTemplateLoader.Template(templatePath)
+	AssertNoError(err, "render template")
+
+	var b bytes.Buffer
+	err = t.Render(&b, data)
+	AssertNoError(err, "render template with data")
+
+	return b.String()
 }

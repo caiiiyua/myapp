@@ -64,8 +64,14 @@ func initRevelTemplateFuncs() {
 	}
 
 	revel.TemplateFuncs["logined"] = func(session revel.Session) bool {
-		v, e := session["user"]
-		return e == true && v != ""
+		// v, e := session["user"]
+		// return e == true && v != ""
+		_, ok := session["user"]
+		return ok
+	}
+
+	revel.TemplateFuncs["isAdmin"] = func(session revel.Session) bool {
+		return false
 	}
 }
 

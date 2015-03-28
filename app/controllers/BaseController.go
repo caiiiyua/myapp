@@ -14,6 +14,11 @@ type BaseController struct {
 	XOrmTnController
 }
 
+func (c *BaseController) IsLogined() bool {
+	_, ok := c.Session["user"]
+	return ok
+}
+
 func (c BaseController) userService() models.UserService {
 	return models.DefaultUserService(c.XOrmSession)
 }
