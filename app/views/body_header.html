@@ -14,7 +14,7 @@
           {{if logined .session}}
             <li><a href="">{{msg . "welcome"}} {{.session.user}}</a></li>
             <li><a href="/logout" title="logout">{{msg . "logout"}}</a></li>
-          	<li><a href='{{url "User.Account"}}'>{{msg . "myAccount"}}</a></li>
+            <li><a href='{{url "User.Account" .session.id}}'>{{msg . "myAccount"}}</a></li>
           {{else}}
             <!-- <li><button id="loginBtn" type="button" class="btn btn-warning navbar-btn">Sign in</button></li>
             <li><button id="RegBtn" type="button" class="btn btn-success navbar-btn">Sign up</button></li> -->

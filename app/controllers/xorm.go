@@ -86,7 +86,7 @@ var InitDB func() = func() {
 	app.Engine.ShowDebug = true
 
 	app.Engine.SetTableMapper(core.NewPrefixMapper(core.SnakeMapper{}, "t_"))
-	// app.Engine.DropTables("t_user")
+	app.Engine.DropTables("t_user")
 
 	err = app.Engine.Sync2(new(entity.User), new(entity.UserRole), new(entity.UserLevel),
 		new(entity.Location), new(entity.UserDetail), new(entity.UserItem))

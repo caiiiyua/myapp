@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"myapp/app/models/entity"
+	"strconv"
 	"time"
 
 	"myapp/app/utils"
@@ -16,6 +17,7 @@ type SessionUser struct {
 	Email   string
 	VipCode string
 	Name    string
+	Id      int64
 }
 
 func (s SessionUser) DisplayName() string {
@@ -25,11 +27,16 @@ func (s SessionUser) DisplayName() string {
 	return s.Name
 }
 
+func (s SessionUser) GetId() string {
+	return strconv.FormatInt(s.Id, 10)
+}
+
 func ToSessionUser(user entity.User) SessionUser {
 	return SessionUser{
 		Email:   user.Email,
 		VipCode: user.CardId,
 		Name:    user.Name,
+		Id:      user.Id,
 	}
 }
 

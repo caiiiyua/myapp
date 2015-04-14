@@ -6,6 +6,6 @@ type User struct {
 	BaseController
 }
 
-func (c *User) Account() revel.Result {
+func (c *User) Account(id string) revel.Result {
 	return c.Render()
 }
