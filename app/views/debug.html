@@ -12,12 +12,13 @@
 	#toggleSidebar {
 		position: absolute;
 		right: 0px;
-		top: 50px;
+		top: 60px;
 		background-color: #fee;
 	}
 
 </style>
 <div id="sidebar" style="display:none;">
+<!-- <div id="sidebar"> -->
 	<h4>Available pipelines</h4>
 	<dl>
 	{{ range $index, $value := .}}
@@ -41,7 +42,7 @@
 	{{end}}
 	</dl>
 </div>
-<a id="toggleSidebar" href="#" class="toggles"><i class="icon-chevron-left"></i></a>
+<a id="toggleSidebar" href="#" class="toggles"><i class="icon-chevron-left"></i>Debug</a>
 
 <script>
 	$sidebar = 0;

@@ -28,8 +28,8 @@ func EmailProvider(email string) string {
 	arrs := strings.Split(email, "@")
 	domain := arrs[1]
 	rules := map[string]string{
-		"163.com":   "smtp.163.com",
-		"qq.com":    "smtp.qq.com",
+		"163.com":   "mail.163.com",
+		"qq.com":    "mail.qq.com",
 		"gmail.com": "mail.google.com",
 	}
 	provider, ok := rules[domain]

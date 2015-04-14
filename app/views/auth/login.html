@@ -1,0 +1,62 @@
+{{template "home/header_box.html" .}}
+<section id="box"  class="animated fadeInUp">
+	<!--
+	<div>
+		<a class="back" href="javascript:history.go(-1);" tabindex="-1">←Back</a>
+	</div>
+	-->
+	<div class="container">
+		<h1 id="logo">{{msg . "app"}}</h1>
+		<div id="boxForm">
+			<div id="boxHeader">{{msg . "login"}}</div>
+			<form id="registerForm" action="{{url "Auth.DoLogin"}}" method="post">
+				<div class="alert alert-danger" id="loginMsg"></div>
+				<input id="from" type="hidden" value="{{.from}}" />
+				<div class="form-group">
+					{{with $field := field "email" .}}
+					<label class="control-label">{{msg $ "usernameOrEmail"}}</label>
+					<input type="text" class="form-control" id="email" name="{{$field.Name}}" value="{{$field.Flash}}" required="">
+					{{end}}
+				</div>
+				<div class="form-group"> 
+					{{with $field := field "pwd" .}}
+					<label class="control-label">{{msg $ "password"}}</label>
+				    <input type="password" class="form-control" id="pwd" name="{{$field.Name}}" required="">
+				    {{end}}
+				</div>
+				
+				<div id="captchaContainer">
+					<div class="form-group" id="captchaCtrl">
+						<label class="control-label">{{msg . "captchalabel"}}</label>
+						<input type="text" class="form-control" id="captcha" name="validationCode">
+						<input id="captchaId" type="hidden" name="captchaId" value="{{.Captcha.CaptchaId}}">
+						<img id="captchaImg" src="/captcha/{{.Captcha.CaptchaId}}.png" alt={{.Captcha.CaptchaId}}>
+						<a href="#" onclick="freshCaptcha();">{{msg . "reloadCaptcha"}}</a>
+					</div>
+				</div>
+				
+				<div class="clearfix">
+					<a href="/findPassword" class="pull-right m-t-xs"><small>{{msg . "forgetPassword"}}</small></a>
+					<button id="loginBtn" class="btn btn-success">{{msg . "login"}}</button>
+				</div>
+				<div class="line line-dashed"></div>
+				<p class="text-muted text-center"><small>{{msg . "hasAcount"}}</small></p>
+				{{if .openRegister}}
+				<a href="/register" class="btn btn-default btn-block">{{msg . "register"}}</a>
+				{{end}}
+				
+				<!-- 3rd party login -->
+				<!-- <a id="loginBtn" href="/register" class="btn btn-default btn-block">{{msg . "register"}}</a> -->
+			</form>	
+		</div>
+    </div>
+</section>
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+{{template "home/footer_box.html" .}}

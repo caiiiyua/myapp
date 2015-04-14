@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/caiiiyua/csv2go"
+	"github.com/revel/revel"
 )
 
 const Version = "0.1"
@@ -24,9 +25,10 @@ type Account struct {
 
 func ImportAccounts() []Account {
 	var acts []Account
-	accountCsv, err := os.Open("public/mssql2csv.csv")
+	path := revel.BasePath
+	accountCsv, err := os.Open(path + "/public/mssql2csv.csv")
 	if err != nil {
-		fmt.Println("open csv accountCsv failed")
+		fmt.Println("open csv accountCsv failed", err)
 		return nil
 	}
 	defer accountCsv.Close()

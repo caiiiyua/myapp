@@ -1,0 +1,27 @@
+{{set . "title" "激活账号"}}
+{{template "header.html" .}}
+{{template "body_header.html" .}}
+
+<div class="header">
+</div>
+<section id="box" class="animated fadeInUp">
+  <h1 id="logo">激活账号</h1>
+
+  <div class="container">
+    <div class="yanzheng">
+      <h3>您的账号已经成功生成，但是您需要激活方可使用本站提供的购买/支付等功能。</h3>
+      <p>我们已经发送一封激活邮件到您填写的邮箱，您可以查收邮件内的激活链接。 点击<a href="{{.emailProvider}}" target="_blank">{{.emailProvider}}</a>进入。</p>
+    </div>
+  </div>
+
+</section>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+{{template "home/footer_box.html" .}}

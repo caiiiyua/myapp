@@ -5,6 +5,7 @@ import (
 	"log"
 	"myapp/app"
 	"myapp/app/controllers/api"
+	"myapp/app/models"
 	"myapp/app/utils"
 
 	"github.com/dchest/captcha"
@@ -58,8 +59,9 @@ func (a Auth) Register(userType string) revel.Result {
 }
 
 func (a Auth) DoRegister(email, pwd, pwd2, validateCode, captchaId string) revel.Result {
+	revel.INFO.Println("DoRegister:", email, pwd, validateCode, captchaId)
 	a.Validation.Required(captcha.VerifyString(captchaId,
-		validateCode)).Message("inputCaptcha").Key("validateCode")
+		validateCode)).Message(a.Message("inputCaptcha")).Key("validateCode")
 	a.Validation.Required(email).Message("inputEmail")
 	a.Validation.Email(email).Message("wrongEmail")
 	a.Validation.MaxSize(email, 100).Message("wrongEmail")
@@ -84,15 +86,20 @@ func (a Auth) DoRegister(email, pwd, pwd2, validateCode, captchaId string) revel
 		a.Redirect(Auth.Register)
 	}
 
-	data := struct {
-		AcivationCode string
-		Email         string
-	}{
-		user.ActivationCode,
-		user.Email,
-	}
+	// data := struct {
+	// 	ActivationCode string
+	// 	Email          string
+	// }{
+	// 	user.ActivationCode,
+	// 	user.Email,
+	// }
+	data := make(map[string]interface{})
+	data["ActivationCode"] = user.ActivationCode
+	data["Email"] = user.Email
 
-	SendMail(a.Message("activationMail"), utils.RenderTemplateToString("/home/activate_user.html", data),
+	// TODO: Do with timeout
+	SendMail(a.Message("activationMail"), utils.RenderTemplateToString("home/user_activate_tmpl.html",
+		data),
 		email)
 	a.RenderArgs["emailProvider"] = EmailProvider(email)
 	a.RenderArgs["email"] = email
@@ -154,10 +161,49 @@ func (a Auth) Login() revel.Result {
 	}
 	a.RenderArgs["Captcha"] = Captcha
 	log.Println("captchaId:", Captcha.CaptchaId)
+	return a.Render()
+}
+
+func (a Auth) Login2() revel.Result {
+	a.RenderArgs["needCaptcha"] = "true"
+	a.RenderArgs["openRegister"] = "true"
+	Captcha := struct {
+		CaptchaId string
+	}{
+		captcha.New(),
+	}
+	a.RenderArgs["Captcha"] = Captcha
+	log.Println("captchaId:", Captcha.CaptchaId)
 	return a.RenderTemplate("home/login.html")
 }
 
 func (a Auth) DoLogin(email, pwd, validationCode, captchaId string) revel.Result {
+	revel.INFO.Println("email:", email, "validationCode:", validationCode, "captchaId:", captchaId)
+	a.Validation.Required(captcha.VerifyString(captchaId,
+		validationCode)).Message(a.Message("inputCaptcha")).Key("validateCode")
+	a.Validation.Required(email).Message(a.Message("inputEmail"))
+	a.Validation.Required(pwd).Message(a.Message("inputPassword"))
+	a.Validation.MinSize(pwd, 6).Message(a.Message("passwordTips"))
+
+	if ret := a.checkAuth(); ret != nil {
+		return ret
+	}
+
+	user, ok := a.userService().CheckUser(email, pwd)
+	a.Validation.Required(!ok).Message(a.Message("wrongUsernameOrPassword")).Key("email")
+	if ret := a.checkAuth(); ret != nil {
+		return ret
+	}
+
+	go a.userService().DoUserLogin(&user)
+
+	a.Session["user"] = models.ToSessionUser(user).DisplayName()
+
+	log.Println("set register session:", a.Session, "with user:", user)
+	return a.Redirect(App.Index)
+}
+
+func (a Auth) DoLogin2(email, pwd, validationCode, captchaId string) revel.Result {
 	log.Println("email:", email, "validationCode:", validationCode, "captchaId:", captchaId)
 	ok := app.NewOk()
 	ok.Ok = a.Validation.Required(captcha.VerifyString(captchaId, validationCode)).Ok

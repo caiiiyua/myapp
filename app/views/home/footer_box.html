@@ -6,5 +6,8 @@
 		<a href="/index">{{msg . "app"}}</a> © 2015
 	</p>
 </div>
+{{if eq .RunMode "dev"}}
+	{{template "debug.html" .}}
+{{end}}
 </body>
 </html>

@@ -332,6 +332,12 @@ func RenderTemplateToString(templatePath string, data interface{}) string {
 	var b bytes.Buffer
 	err = t.Render(&b, data)
 	AssertNoError(err, "render template with data")
-
 	return b.String()
+	// t, err := template.ParseFiles(templatePath)
+	// AssertNoError(err, "Render template file")
+
+	// var b bytes.Buffer
+	// err = t.Execute(&b, data)
+	// AssertNoError(err, "Render temolate with data")
+	// return b.String()
 }

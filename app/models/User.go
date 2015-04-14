@@ -12,6 +12,27 @@ import (
 	"github.com/go-xorm/xorm"
 )
 
+type SessionUser struct {
+	Email   string
+	VipCode string
+	Name    string
+}
+
+func (s SessionUser) DisplayName() string {
+	if len(s.Name) == 0 {
+		return s.Email
+	}
+	return s.Name
+}
+
+func ToSessionUser(user entity.User) SessionUser {
+	return SessionUser{
+		Email:   user.Email,
+		VipCode: user.CardId,
+		Name:    user.Name,
+	}
+}
+
 type UserService interface {
 	Total() int64
 	ListUsers() []entity.User
@@ -22,6 +43,9 @@ type UserService interface {
 	// ExistsUserByPhone(mobile string) bool
 	// ExistsUser(username string) bool
 	Activate(email, code string) (entity.User, error)
+	CheckUser(email, password string) (entity.User, bool)
+	CheckUserByEmail(email string) (entity.User, bool)
+	DoUserLogin(user *entity.User) error
 }
 
 func DefaultUserService(session *xorm.Session) UserService {
@@ -52,7 +76,7 @@ func (this *defaultUserService) ListUsers() (users []entity.User) {
 
 func (this *defaultUserService) RegistUserByEmail(email, password string) (user entity.User, err error) {
 	user.Email = email
-	user.CryptedPassword = password
+	user.CryptedPassword = utils.Sha1(password)
 	user.ActivationCode = utils.Uuid()
 	user.ActivationCodeCreatedAt = time.Now()
 
@@ -85,4 +109,22 @@ func (this *defaultUserService) Activate(email, code string) (user entity.User, 
 		err = errors.New("no user found	!")
 		return
 	}
+}
+
+func (this *defaultUserService) CheckUser(email, password string) (user entity.User, ok bool) {
+	log.Println("email:", email, "pwd:", utils.Sha1(password))
+	ok, err := this.session.Where("email=? and crypted_password=?", email, utils.Sha1(password)).Get(&user)
+	log.Println("user:", user, "ok:", ok, "err:", err)
+	return user, ok && err != nil
+}
+
+func (this *defaultUserService) CheckUserByEmail(email string) (user entity.User, ok bool) {
+	ok, err := this.session.Where("email=?", email).Get(&user)
+	return user, ok && err != nil
+}
+
+func (this *defaultUserService) DoUserLogin(user *entity.User) error {
+	user.LastSignAt = time.Now()
+	_, err := this.session.Id(user.Id).Update(user)
+	return err
 }
