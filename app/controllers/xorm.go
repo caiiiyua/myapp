@@ -7,6 +7,7 @@ import (
 	"myapp/app/models/entity"
 	"myapp/app/utils"
 	"regexp"
+	"strconv"
 
 	"github.com/go-xorm/core"
 	"github.com/go-xorm/xorm"
@@ -87,6 +88,7 @@ var InitDB func() = func() {
 
 	app.Engine.SetTableMapper(core.NewPrefixMapper(core.SnakeMapper{}, "t_"))
 	app.Engine.DropTables("t_user")
+	app.Engine.DropTables("t_user_item")
 
 	err = app.Engine.Sync2(new(entity.User), new(entity.UserRole), new(entity.UserLevel),
 		new(entity.Location), new(entity.UserDetail), new(entity.UserItem))
@@ -108,12 +110,20 @@ func tryInitData() {
 	acts = app.ImportAccounts()
 	log.Println("accounts:", len(acts))
 	users := []entity.User{}
+	items := []entity.UserItem{}
 	for _, act := range acts {
 		user := entity.User{}
 		user.CardId = act.CardId
 		user.Name = act.Name
 		user.Mobile = act.Mobile
 		users = append(users, user)
+		for _, item := range act.Items {
+			i := entity.UserItem{}
+			i.CardId = item.ActId
+			i.ItemId, _ = strconv.ParseInt(item.ItemId, 10, 64)
+			i.Qty = item.Quantity
+			items = append(items, i)
+		}
 	}
 	for _, user := range users {
 		if len(user.CardId) <= 0 || len(user.CardId) > 7 {
@@ -125,6 +135,8 @@ func tryInitData() {
 			log.Println(err)
 		}
 	}
+
+	app.Engine.Insert(&items)
 }
 
 func driverInfoFromConfig() (driver, spec string) {
