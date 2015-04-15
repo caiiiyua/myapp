@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<p>感谢你注册成为爱奶瓶会员，请点击下面链接激活账户，完成注册:</p>
-		<a href="http://localhost:9000/activate?activationCode=">{{msg . "activation"}}</a>
+		<a href="http://localhost:9000/activate?activationCode={{.ActivationCode}}&email={{raw .Email}}">激活账户</a>
 		<a href="http://localhost:9000/activate?activationCode={{.ActivationCode}}&email={{raw .Email}}">{{msg . "activation"}}</a>
 	</body>
 </html>

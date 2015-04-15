@@ -126,7 +126,7 @@ func (this *defaultUserService) CheckUser(email, password string) (user entity.U
 	log.Println("email:", email, "pwd:", utils.Sha1(password))
 	ok, err := this.session.Where("email=? and crypted_password=?", email, utils.Sha1(password)).Get(&user)
 	log.Println("user:", user, "ok:", ok, "err:", err)
-	return user, ok && err != nil
+	return user, ok && err == nil
 }
 
 func (this *defaultUserService) CheckUserByEmail(email string) (user entity.User, ok bool) {

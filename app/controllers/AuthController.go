@@ -16,22 +16,22 @@ type Auth struct {
 	BaseController
 }
 
-func (a Auth) checkReg() revel.Result {
-	return a.check(Auth.Register)
-}
+// func (a Auth) checkReg() revel.Result {
+// 	return a.check(Auth.Register)
+// }
 
-func (a Auth) checkAuth() revel.Result {
-	return a.check(Auth.Login)
-}
+// func (a Auth) checkAuth() revel.Result {
+// 	return a.check(Auth.Login)
+// }
 
-func (a Auth) check(f interface{}) revel.Result {
-	if a.Validation.HasErrors() {
-		a.Validation.Keep()
-		a.FlashParams()
-		return a.Redirect(f)
-	}
-	return nil
-}
+// func (a Auth) check(f interface{}) revel.Result {
+// 	if a.Validation.HasErrors() {
+// 		a.Validation.Keep()
+// 		a.FlashParams()
+// 		return a.Redirect(f)
+// 	}
+// 	return nil
+// }
 
 func (a Auth) Register2() revel.Result {
 	if v, ok := a.Session["user"]; ok {
@@ -190,8 +190,9 @@ func (a Auth) DoLogin(email, pwd, validationCode, captchaId string) revel.Result
 	}
 
 	user, ok := a.userService().CheckUser(email, pwd)
-	a.Validation.Required(!ok).Message(a.Message("wrongUsernameOrPassword")).Key("email")
+	a.Validation.Required(ok).Message(a.Message("wrongUsernameOrPassword")).Key("email")
 	if ret := a.checkAuth(); ret != nil {
+		log.Println("Need login first!")
 		return ret
 	}
 
