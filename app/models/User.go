@@ -56,7 +56,9 @@ type UserService interface {
 	Activate(email, code string) (entity.User, error)
 	CheckUser(email, password string) (entity.User, bool)
 	CheckUserByEmail(email string) (entity.User, bool)
+	CheckUserById(id string) (entity.User, bool)
 	DoUserLogin(user *entity.User) error
+	CheckUserLogin(userId int64, userName string) (entity.User, bool)
 }
 
 func DefaultUserService(session *xorm.Session) UserService {
@@ -131,11 +133,22 @@ func (this *defaultUserService) CheckUser(email, password string) (user entity.U
 
 func (this *defaultUserService) CheckUserByEmail(email string) (user entity.User, ok bool) {
 	ok, err := this.session.Where("email=?", email).Get(&user)
-	return user, ok && err != nil
+	return user, ok && err == nil
+}
+
+func (this *defaultUserService) CheckUserById(id string) (user entity.User, ok bool) {
+	ok, err := this.session.Where("id=?", id).Get(&user)
+	log.Println("user:", user, "ok:", ok, "err:", err)
+	return user, ok && err == nil
 }
 
 func (this *defaultUserService) DoUserLogin(user *entity.User) error {
 	user.LastSignAt = time.Now()
 	_, err := this.session.Id(user.Id).Update(user)
 	return err
+}
+
+func (this *defaultUserService) CheckUserLogin(userId int64, userName string) (user entity.User, ok bool) {
+	ok, err := this.session.Where("id=? and email=?", userId, userName).Get(&user)
+	return user, ok && err == nil
 }

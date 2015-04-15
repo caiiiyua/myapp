@@ -77,3 +77,13 @@ fresh=新鲜
 freshNote=12:00到店消毒, 当天全程冷链配送
 trust=信任
 trustNote=为家人提供可以信赖的牛奶
+
+# Account
+accountType=账户
+amount=余额
+charge=充值
+cash=现金账户
+milk=牛奶 250ml
+milk2=牛奶 500ml
+yoghourt=原味酸奶
+pudding=布丁

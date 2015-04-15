@@ -76,3 +76,13 @@ fresh=Fresh Milk
 freshNote=Fresh Milk
 trust=Trust
 trustNote=Order with trust
+
+# Account
+accountType=Account
+amount=Amount
+charge=Charge
+cash=Cash
+milk=Milk 250ml
+milk2=Milk 500ml
+yoghourt=Yoghourt
+pudding=Pudding

@@ -14,9 +14,10 @@ type BaseController struct {
 	XOrmTnController
 }
 
-func (c BaseController) IsLogined() bool {
-	_, ok := c.Session["user"]
-	return ok
+func (c BaseController) IsLogined(id string) bool {
+	user, ok := c.Session["user"]
+	userId, ok2 := c.Session["id"]
+	return ok && ok2 && user != "" && userId == id
 }
 
 func (c BaseController) userService() models.UserService {
@@ -94,8 +95,8 @@ func (c BaseController) checkAuth() revel.Result {
 	return c.check(Auth.Login)
 }
 
-func (c BaseController) checkLogined() revel.Result {
-	if !c.IsLogined() {
+func (c BaseController) checkLogined(id string) revel.Result {
+	if !c.IsLogined(id) {
 		c.Validation.Error("Need logined").Key("email")
 	}
 	return c.check(Auth.Login)

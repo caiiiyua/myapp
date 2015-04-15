@@ -16,19 +16,15 @@
 					<h2 class="content-header">{{.Name}}: {{.CardNo}}</h2>
 				 <table class="table">
 				 	<tr>
-				 		<th>{{msg . "cardId"}}</th>
-				 		<th>{{msg . "name"}}</th>
-				 		<th>{{msg . "email"}}</th>
-				 		<th>{{msg . "mobile"}}</th>
-				 		<th>{{msg . "verified"}}</th>
+				 		<th>{{msg . "accountType"}}</th>
+				 		<th>{{msg . "amount"}}</th>
+				 		<th>{{msg . "charge"}}</th>
 				 	</tr>
-					{{range .users}}
+					{{range .account}}
 					<tr>
-						<td>{{.CardId}}</td>
 						<td>{{.Name}}</td>
-						<td>{{.Email}}</td>
-						<td>{{.Mobile}}</td>
-						<td>{{.Verified}}</td>
+						<td>{{.Amount}}</td>
+						<td><a href="#">{{msg . "charge"}}</a></td>
 					</tr>
 					{{end}}
 				</table>
