@@ -170,6 +170,8 @@ func (this *defaultUserService) JoinAccount(user *entity.User, vipNo, phoneNo st
 			log.Println("Update failed:", updateErr)
 			return updateErr
 		}
+		itemSql := "update t_user_item set user_id=? where card_id=?"
+		this.session.Exec(itemSql, user.Id, user.CardId)
 	}
 	return err
 }
