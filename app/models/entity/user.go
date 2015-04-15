@@ -32,7 +32,7 @@ type User struct {
 	Name                    string `db:"Name" json:"Name" xorm:"varchar(100)"`                               // real name of user
 	Email                   string `db:"email" json:"email" xorm:varchar(100)`                               // email address of user
 	Mobile                  string `db:"mobilephone" json:"mobile_phone" xorm:"varchar(100) not null index"` // mobile phone of user
-	CardId                  string `db:"CardId" json:"card_id" xorm:"varchar(64) unique index"`              // vip card no of user
+	CardId                  string `db:"CardId" json:"card_id" xorm:"varchar(64) index"`                     // vip card no of user
 	Scores                  int    `json:"scores" xorm:"int default 0"`                                      // total scores of user currently
 	Level                   string `json:"level" xorm:"varchar(20)"`                                         // vip level of user
 	Gender                  string `json:"gender" xorm:"varchar(100)"`                                       // gender of user

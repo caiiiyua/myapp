@@ -254,7 +254,7 @@ func (a Auth) Activate(activationCode, email string) revel.Result {
 	return a.RenderTemplate("home/activate.html")
 }
 
-func (a *Auth) Join() revel.Result {
+func (a Auth) Join() revel.Result {
 	a.RenderArgs["needCaptcha"] = "true"
 	a.RenderArgs["openRegister"] = "true"
 	Captcha := struct {
@@ -292,7 +292,11 @@ func (a *Auth) DoJoin(email, pwd, validationCode, captchaId, vipno, phoneno stri
 	a.Session["id"] = models.ToSessionUser(user).GetId()
 	log.Println("set register session:", a.Session, "with user:", user)
 
-	// go a.userService().JoinAccount(user, vipno, phoneno)
+	err := a.userService().JoinAccount(&user, vipno, phoneno)
+	if err != nil {
+		a.Validation.Error("Phone or Vip No. was not correct!").Key("join")
+		return a.Redirect(Auth.Join)
+	}
 	id := models.ToSessionUser(user).GetId()
 	return a.Redirect("/users/%s", id)
 }

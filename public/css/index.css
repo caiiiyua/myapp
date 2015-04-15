@@ -631,3 +631,7 @@ div#content h1 {
   border: 0;
 }
 
+.sidebar {
+  height: 512px;
+}
+

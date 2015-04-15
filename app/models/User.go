@@ -59,6 +59,7 @@ type UserService interface {
 	CheckUserById(id string) (entity.User, bool)
 	DoUserLogin(user *entity.User) error
 	CheckUserLogin(userId int64, userName string) (entity.User, bool)
+	JoinAccount(user *entity.User, vipNo, phoneNo string) error
 }
 
 func DefaultUserService(session *xorm.Session) UserService {
@@ -151,4 +152,24 @@ func (this *defaultUserService) DoUserLogin(user *entity.User) error {
 func (this *defaultUserService) CheckUserLogin(userId int64, userName string) (user entity.User, ok bool) {
 	ok, err := this.session.Where("id=? and email=?", userId, userName).Get(&user)
 	return user, ok && err == nil
+}
+
+func (this *defaultUserService) JoinAccount(user *entity.User, vipNo, phoneNo string) error {
+	var vipInfo entity.User
+	ok, err := this.session.Where("mobile=? and card_id=?", phoneNo, vipNo).Get(&vipInfo)
+	if ok && err == nil {
+		user.CreateTime = vipInfo.CreateTime
+		user.CardId = vipInfo.CardId
+		user.Mobile = vipInfo.Mobile
+		user.Address = vipInfo.Address
+		user.Name = vipInfo.Name
+		log.Println("New user:", user)
+		this.session.Id(vipInfo.Id).Delete(&vipInfo)
+		_, updateErr := this.session.Id(user.Id).Update(user)
+		if updateErr != nil {
+			log.Println("Update failed:", updateErr)
+			return updateErr
+		}
+	}
+	return err
 }
