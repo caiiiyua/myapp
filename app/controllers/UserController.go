@@ -7,7 +7,7 @@ type User struct {
 }
 
 func (c *User) Account(id string) revel.Result {
-	if ret := c.checkAuth(); ret != nil {
+	if ret := c.checkLogined(); ret != nil {
 		return ret
 	}
 	return c.Render()

@@ -91,8 +91,12 @@ func (c BaseController) checkReg() revel.Result {
 }
 
 func (c BaseController) checkAuth() revel.Result {
+	return c.check(Auth.Login)
+}
+
+func (c BaseController) checkLogined() revel.Result {
 	if !c.IsLogined() {
-		c.Validation.Error("Need logined")
+		c.Validation.Error("Need logined").Key("email")
 	}
 	return c.check(Auth.Login)
 }
