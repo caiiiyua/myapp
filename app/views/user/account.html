@@ -1,33 +1,43 @@
-{{set . "title" "我的账户"}}
-{{template "header.html" .}}
+{{set . "title" "我的账户 - "}}
+{{template "new_header.html" .}}
 
-<div class="header">
-</div>
-<section id="box" class="animated fadeInUp">
-	<h1 id="logo">我的账户</h1>
-
-	<div class="container">
-		 <div>{{msg . "usersCount"}}: {{.users_count}}</div>
-		 <table class="table">
-		 	<tr>
-		 		<th>{{msg . "cardId"}}</th>
-		 		<th>{{msg . "name"}}</th>
-		 		<th>{{msg . "email"}}</th>
-		 		<th>{{msg . "mobile"}}</th>
-		 		<th>{{msg . "verified"}}</th>
-		 	</tr>
-			{{range .users}}
-			<tr>
-				<td>{{.CardId}}</td>
-				<td>{{.Name}}</td>
-				<td>{{.Email}}</td>
-				<td>{{.Mobile}}</td>
-				<td>{{.Verified}}</td>
-			</tr>
-			{{end}}
-		</table>
+<div id="content" class="animated fadeInUp">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li class="active"><a href="#" title="">我的账户<span class="sr-only">(current)</span></a></li>
+					<li><a href="#" title="">充值记录</a></li>
+					<li><a href="#" title="">消费记录</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-9 col-md-10 main">
+				<div class="container">
+					<h2 class="content-header">{{.Name}}: {{.CardNo}}</h2>
+				 <table class="table">
+				 	<tr>
+				 		<th>{{msg . "cardId"}}</th>
+				 		<th>{{msg . "name"}}</th>
+				 		<th>{{msg . "email"}}</th>
+				 		<th>{{msg . "mobile"}}</th>
+				 		<th>{{msg . "verified"}}</th>
+				 	</tr>
+					{{range .users}}
+					<tr>
+						<td>{{.CardId}}</td>
+						<td>{{.Name}}</td>
+						<td>{{.Email}}</td>
+						<td>{{.Mobile}}</td>
+						<td>{{.Verified}}</td>
+					</tr>
+					{{end}}
+				</table>
+				</div>
+			</div>
+		
+		</div>
 	</div>
 
-</section>
+</div>
 
-{{template "footer.html" .}}
+{{template "new_footer.html" .}}

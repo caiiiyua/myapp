@@ -31,6 +31,10 @@ func (s SessionUser) GetId() string {
 	return strconv.FormatInt(s.Id, 10)
 }
 
+func (s SessionUser) GetVipNo() string {
+	return s.VipCode
+}
+
 func ToSessionUser(user entity.User) SessionUser {
 	return SessionUser{
 		Email:   user.Email,

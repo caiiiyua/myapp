@@ -302,6 +302,17 @@ input,
   width: 500px;
   color: #eee;
 }
+div#content {
+  margin: 0;
+  color: #000;
+  padding-top: 60px;
+}
+div#content h1 {
+  margin: auto;
+  margin-bottom: 20px;
+  width: 500px;
+  color: #eee;
+}
 #logo {
   text-align: center;
 }
@@ -611,3 +622,12 @@ input,
 .hide-img {
   opacity: 0;
 }
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+

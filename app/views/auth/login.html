@@ -9,7 +9,7 @@
 		<h1 id="logo">{{msg . "app"}}</h1>
 		<div id="boxForm">
 			<div id="boxHeader">{{msg . "login"}}</div>
-			<form id="registerForm" action="{{url "Auth.DoLogin"}}" method="post">
+			<form id="loginForm2" action="{{url "Auth.DoLogin"}}" method="post">
 				<div class="alert alert-danger" id="loginMsg"></div>
 				<input id="from" type="hidden" value="{{.from}}" />
 				<div class="form-group">

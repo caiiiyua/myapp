@@ -14,7 +14,7 @@ type BaseController struct {
 	XOrmTnController
 }
 
-func (c *BaseController) IsLogined() bool {
+func (c BaseController) IsLogined() bool {
 	_, ok := c.Session["user"]
 	return ok
 }
@@ -84,4 +84,24 @@ func (c BaseController) SetLocale() string {
 		lang = "en"
 	}
 	return lang
+}
+
+func (c BaseController) checkReg() revel.Result {
+	return c.check(Auth.Register)
+}
+
+func (c BaseController) checkAuth() revel.Result {
+	if !c.IsLogined() {
+		c.Validation.Error("Need logined")
+	}
+	return c.check(Auth.Login)
+}
+
+func (c BaseController) check(f interface{}) revel.Result {
+	if c.Validation.HasErrors() {
+		c.Validation.Keep()
+		c.FlashParams()
+		return c.Redirect(f)
+	}
+	return nil
 }
