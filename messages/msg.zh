@@ -1,6 +1,7 @@
 # Forms
 register=注册
 login=登录
+join=关联账号
 email=电子邮件
 password=密码
 password2=确认密码

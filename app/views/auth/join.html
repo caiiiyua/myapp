@@ -8,9 +8,9 @@
   <div class="container">
     <h1 id="logo">{{msg . "app"}}</h1>
     <div id="boxForm">
-      <div id="boxHeader">{{msg . "register"}}</div>
+      <div id="boxHeader">{{msg . "join"}}</div>
 <!--      <p class="text-center" id="registerText" type="hidden">{{msg . "registerSuccessAndSendValidationEmail"}} <a href="{{.emailProvider}}">{{.email}}</a></p> -->
-      <form id="registerForm" action="{{url "Auth.DoRegister"}}" method="post">
+      <form id="loginForm2" action="{{url "Auth.DoJoin"}}" method="post">
         <div class="alert alert-danger" id="loginMsg"></div> 
         <input id="from" type="hidden" value="{{.from}}" />
         <div class="form-group"> 
@@ -19,13 +19,6 @@
           <input type="email" class="form-control" id="email" name="{{$field.Name}}" value="{{$field.Flash}}" required=""> 
           {{end}}
         </div>
-        <!-- {{with $field := field "email" .}}
-        <p class="{{$field.ErrorClass}}">
-          <strong>Email:</strong>
-          <input type="email" name="{{$field.Name}}" value="{{$field.Flash}}" required="">
-          * <span class="error">{{$field.Error}}</span>
-        </p>
-        {{end}} -->
         <div class="form-group"> 
           {{with $field := field "pwd" .}}
           <label class="control-label" for="pwd">{{msg $ "password"}}</label>
@@ -33,30 +26,36 @@
           {{msg $ "passwordTips"}} 
           {{end}}
         </div>
-        <div class="form-group"> 
-          {{with $field := field "pwd2" .}}
-          <label class="control-label" for="pwd2">{{msg $ "password2"}}</label>
-          <input type="password" class="form-control" id="pwd2" name="{{$field.Name}}" required="">
-          {{end}}
-        </div>
         <div id="captchaContainer">
           <div class="form-group" id="captchaCtrl">
             <label class="control-label">{{msg . "captchalabel"}}</label>
-            <input type="text" class="form-control" id="captcha" name="validateCode" value="" required="">
+            <input type="text" class="form-control" id="captcha" name="validationCode" value="" required="">
             <input id="captchaId" type="hidden" name="captchaId" value="{{.Captcha.CaptchaId}}">
             <img id="captchaImg" src="/captcha/{{.Captcha.CaptchaId}}.png" alt={{.Captcha.CaptchaId}}>
             <a href="#" onclick="freshCaptcha();">{{msg . "reloadCaptcha"}}</a>
           </div>
         </div>
+        <div class="line line-dashed"></div>
+        <div class="form-group"> 
+          {{with $field := field "vipno" .}}
+          <label class="control-label" for="vipno">{{msg $ "cardId"}}</label>
+          <input type="text" class="form-control" id="vipno" name="{{$field.Name}}" required="">
+          {{end}}
+        </div>
+        <div class="form-group"> 
+          {{with $field := field "phoneno" .}}
+          <label class="control-label" for="phoneno">{{msg $ "mobile"}}</label>
+          <input type="text" class="form-control" id="phoneno" name="{{$field.Name}}" required="">
+          {{end}}
+        </div>
         
-        <button id="registerBtn" class="btn btn-success">{{msg . "register"}}</button>
+        <button id="registerBtn" class="btn btn-success">{{msg . "join"}}</button>
         
         <div class="line line-dashed"></div>
         
         <p class="text-muted text-center"><small>{{msg . "hadAcount"}}</small></p>
         
         <a id="loginBtn" href="/login" class="btn btn-default btn-block">{{msg . "login"}}</a>
-        <a id="loginBtn" href="/join" class="btn btn-default btn-block">{{msg . "join"}}</a>
       </form>   
     </div>
   </div>

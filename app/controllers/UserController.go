@@ -11,7 +11,7 @@ type User struct {
 	BaseController
 }
 
-func (c *User) Account(id string) revel.Result {
+func (c User) Account(id string) revel.Result {
 	if ret := c.checkLogined(id); ret != nil {
 		log.Println("id:", id, "was not logined!")
 		return ret

@@ -19,6 +19,8 @@ DELETE  /items/:id                        		Items.Delete
 # User register & login
 GET 	/register								Auth.Register
 POST 	/register								Auth.DoRegister
+GET 	/join 									Auth.Join
+POST 	/join 									Auth.DoJoin
 GET 	/logout									Auth.Logout
 GET 	/login									Auth.Login
 POST 	/login									Auth.DoLogin

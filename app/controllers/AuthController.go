@@ -253,3 +253,46 @@ func (a Auth) Activate(activationCode, email string) revel.Result {
 	}
 	return a.RenderTemplate("home/activate.html")
 }
+
+func (a *Auth) Join() revel.Result {
+	a.RenderArgs["needCaptcha"] = "true"
+	a.RenderArgs["openRegister"] = "true"
+	Captcha := struct {
+		CaptchaId string
+	}{
+		captcha.New(),
+	}
+	a.RenderArgs["Captcha"] = Captcha
+	log.Println("captchaId:", Captcha.CaptchaId)
+	return a.Render()
+}
+
+func (a *Auth) DoJoin(email, pwd, validationCode, captchaId, vipno, phoneno string) revel.Result {
+	revel.INFO.Println("email:", email, "validationCode:", validationCode, "captchaId:", captchaId,
+		"vipno:", vipno, "phoneno:", phoneno)
+	a.Validation.Required(captcha.VerifyString(captchaId,
+		validationCode)).Message(a.Message("inputCaptcha")).Key("validateCode")
+	a.Validation.Required(email).Message(a.Message("inputEmail"))
+	a.Validation.Required(pwd).Message(a.Message("inputPassword"))
+	a.Validation.MinSize(pwd, 6).Message(a.Message("passwordTips"))
+
+	if ret := a.checkAuth(); ret != nil {
+		return ret
+	}
+
+	user, ok := a.userService().CheckUser(email, pwd)
+	a.Validation.Required(ok).Message(a.Message("wrongUsernameOrPassword")).Key("email")
+	if ret := a.checkAuth(); ret != nil {
+		log.Println("Need login first!")
+		return ret
+	}
+	go a.userService().DoUserLogin(&user)
+
+	a.Session["user"] = models.ToSessionUser(user).DisplayName()
+	a.Session["id"] = models.ToSessionUser(user).GetId()
+	log.Println("set register session:", a.Session, "with user:", user)
+
+	// go a.userService().JoinAccount(user, vipno, phoneno)
+	id := models.ToSessionUser(user).GetId()
+	return a.Redirect("/users/%s", id)
+}

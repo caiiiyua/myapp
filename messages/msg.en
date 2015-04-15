@@ -1,6 +1,7 @@
 # Forms
 register=Sign Up
 login=Sign In
+join=Join In
 email=Email
 password=Password
 password2=Confirm Password
