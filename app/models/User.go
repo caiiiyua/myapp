@@ -13,6 +13,11 @@ import (
 	"github.com/go-xorm/xorm"
 )
 
+type ItemAccount struct {
+	entity.UserItem `xorm:"extends"`
+	Name            string
+}
+
 type SessionUser struct {
 	Email   string
 	VipCode string
@@ -60,6 +65,7 @@ type UserService interface {
 	DoUserLogin(user *entity.User) error
 	CheckUserLogin(userId int64, userName string) (entity.User, bool)
 	JoinAccount(user *entity.User, vipNo, phoneNo string) error
+	GetUserItems(vipNo string) ([]ItemAccount, bool)
 }
 
 func DefaultUserService(session *xorm.Session) UserService {
@@ -174,4 +180,9 @@ func (this *defaultUserService) JoinAccount(user *entity.User, vipNo, phoneNo st
 		this.session.Exec(itemSql, user.Id, user.CardId)
 	}
 	return err
+}
+
+func (this *defaultUserService) GetUserItems(vipNo string) (items []ItemAccount, ok bool) {
+	this.session.Sql("select t_user_item.*, t_item.Name from t_user_item, t_item where t_user_item.card_id=? and t_user_item.item_id = t_item.code", vipNo).Find(&items)
+	return items, true
 }

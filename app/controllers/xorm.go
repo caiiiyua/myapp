@@ -89,9 +89,11 @@ var InitDB func() = func() {
 	app.Engine.SetTableMapper(core.NewPrefixMapper(core.SnakeMapper{}, "t_"))
 	app.Engine.DropTables("t_user")
 	app.Engine.DropTables("t_user_item")
+	app.Engine.DropTables("t_item")
+	app.Engine.DropTables("item")
 
 	err = app.Engine.Sync2(new(entity.User), new(entity.UserRole), new(entity.UserLevel),
-		new(entity.Location), new(entity.UserDetail), new(entity.UserItem))
+		new(entity.Location), new(entity.UserDetail), new(entity.UserItem), new(entity.Item))
 	if err != nil {
 		log.Fatal("Sync2 with error:", err)
 	}
@@ -135,6 +137,48 @@ func tryInitData() {
 			log.Println(err)
 		}
 	}
+
+	app.Engine.Insert(&items)
+
+	initItems()
+}
+
+func initItems() {
+	var items []entity.Item
+	milk250 := entity.Item{}
+	milk250.Code = "1001"
+	milk250.Price = 7.0
+	milk250.Name = "250ml 鲜牛奶"
+	milk250.Description = "250ml 巴氏鲜奶"
+	items = append(items, milk250)
+
+	milk500 := entity.Item{}
+	milk500.Code = "1002"
+	milk500.Price = 12.0
+	milk500.Name = "500ml 鲜牛奶"
+	milk500.Description = "500ml 巴氏鲜奶"
+	items = append(items, milk500)
+
+	yoghourt := entity.Item{}
+	yoghourt.Code = "2001"
+	yoghourt.Price = 8.0
+	yoghourt.Name = "原味酸奶"
+	yoghourt.Description = "原味酸奶"
+	items = append(items, yoghourt)
+
+	pudding := entity.Item{}
+	pudding.Code = "1008"
+	pudding.Price = 10.0
+	pudding.Name = "布丁"
+	pudding.Description = "焦糖布丁"
+	items = append(items, pudding)
+
+	shuangpi := entity.Item{}
+	shuangpi.Code = "3001"
+	shuangpi.Price = 8.0
+	shuangpi.Name = "双皮奶"
+	shuangpi.Description = "双皮奶"
+	items = append(items, shuangpi)
 
 	app.Engine.Insert(&items)
 }

@@ -22,7 +22,10 @@ func (c User) Account(id string) revel.Result {
 		return c.Redirect(Auth.Login)
 	}
 
-	Name := models.ToSessionUser(user).DisplayName()
-	CardNo := models.ToSessionUser(user).GetVipNo()
-	return c.Render(Name, CardNo)
+	name := models.ToSessionUser(user).DisplayName()
+	cardNo := models.ToSessionUser(user).GetVipNo()
+
+	account, _ := c.userService().GetUserItems(cardNo)
+	log.Println("account:", account)
+	return c.Render(account, name, cardNo)
 }
