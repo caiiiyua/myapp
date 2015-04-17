@@ -119,6 +119,17 @@ func tryInitData() {
 		user.Name = act.Name
 		user.Mobile = act.Mobile
 		users = append(users, user)
+
+		cash := entity.UserItem{}
+		cash.CardId = user.CardId
+		cash.ItemId = 100
+		act.LeftAmt = act.SaveAmt - act.ConsumeAmt
+		if act.LeftAmt < 0 {
+			act.LeftAmt = 0
+		}
+		cash.Qty = int64(act.LeftAmt)
+		items = append(items, cash)
+
 		for _, item := range act.Items {
 			i := entity.UserItem{}
 			i.CardId = item.ActId
@@ -179,6 +190,13 @@ func initItems() {
 	shuangpi.Name = "双皮奶"
 	shuangpi.Description = "双皮奶"
 	items = append(items, shuangpi)
+
+	cash := entity.Item{}
+	cash.Code = "100"
+	cash.Price = 1
+	cash.Name = "现金"
+	cash.Description = "现金账户"
+	items = append(items, cash)
 
 	app.Engine.Insert(&items)
 }
