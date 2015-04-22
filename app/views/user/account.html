@@ -1,19 +1,39 @@
 {{set . "title" "我的账户 - "}}
 {{template "new_header.html" .}}
+{{range .moreScripts}}
+      <script src="/public/js/holder.js" type="text/javascript" charset="utf-8"></script>
+{{end}}
 
 <div id="content" class="animated fadeInUp">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-3 col-md-2 sidebar">
+			<!-- <div class="col-sm-6 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
 					<li class="active"><a href="#" title="">我的账户<span class="sr-only">(current)</span></a></li>
 					<li><a href="#" title="">充值记录</a></li>
 					<li><a href="#" title="">消费记录</a></li>
 				</ul>
-			</div>
+			</div> -->
 			<div class="col-sm-9 col-md-10 main">
 				<div class="container">
 					<h2 class="content-header">{{.name}}: {{.cardNo}}</h2>
+					<!-- <div class="row placeholders">
+		            <div class="col-md-4 col-sm-6 placeholder">
+		              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+		              <h4>Label</h4>
+		              <span class="text-muted">Something else</span>
+		            </div>
+		            <div class="col-md-4 col-sm-6 placeholder">
+		              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+		              <h4>Label</h4>
+		              <span class="text-muted">Something else</span>
+		            </div>
+		            <div class="col-md-4 col-sm-6 placeholder">
+		              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+		              <h4>Label</h4>
+		              <span class="text-muted">Something else</span>
+		            </div>
+		          </div> -->
 				 <table class="table">
 				 	<tr>
 				 		<th>{{msg . "accountType"}}</th>
