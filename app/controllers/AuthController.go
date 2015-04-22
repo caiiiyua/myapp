@@ -103,6 +103,11 @@ func (a Auth) DoRegister(email, pwd, pwd2, validateCode, captchaId string) revel
 		email)
 	a.RenderArgs["emailProvider"] = EmailProvider(email)
 	a.RenderArgs["email"] = email
+
+	go a.userService().DoUserLogin(&user)
+
+	a.Session["user"] = models.ToSessionUser(user).DisplayName()
+	a.Session["id"] = models.ToSessionUser(user).GetId()
 	return a.Render()
 }
 
