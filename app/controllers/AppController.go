@@ -23,7 +23,7 @@ func (c App) Index() revel.Result {
 	locale := c.SetLocale()
 	fmt.Println(locale)
 	c.RenderArgs["users_count"] = c.userService().Total()
-	c.RenderArgs["users"] = c.userService().ListUsers()
+	// c.RenderArgs["users"] = c.userService().ListUsers()
 	c.RenderArgs["version"] = app.Version
 	//	return c.RenderTemplate("home/index_" + locale + ".html")
 	// return c.RenderTemplate("home/index.html")

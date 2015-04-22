@@ -29,3 +29,13 @@ func (c User) Account(id string) revel.Result {
 	log.Println("account:", account)
 	return c.Render(account, name, cardNo)
 }
+
+func (c User) Accounts() revel.Result {
+
+	id, ok := c.Session["id"]
+	log.Println("id:", id, " ok:", ok)
+	if ok && id != "" && id != "0" {
+		return c.Redirect("/users/%s", id)
+	}
+	return c.Redirect(Auth.Login)
+}
