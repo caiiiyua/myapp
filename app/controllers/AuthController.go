@@ -153,7 +153,8 @@ func (a Auth) DoRegister2(email, pwd, captcha, captchaId string) revel.Result {
 
 func (a Auth) Logout() revel.Result {
 	delete(a.Session, "user")
-	return a.RenderTemplate("home/index.html")
+	delete(a.Session, "id")
+	return a.Redirect(App.Index)
 }
 
 func (a Auth) Login() revel.Result {

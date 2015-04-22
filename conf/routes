@@ -29,6 +29,8 @@ POST 	/login									Auth.DoLogin
 GET 	/admin/users 							Admin.Users
 GET 	/users							  		User.Accounts
 GET 	/users/:id 								User.Account
+GET 	/users/:id/join 						User.Join
+POST 	/users/:id/join 						User.DoJoin
 GET     /inventory/                             App.Inventory
 
 #GET     /inventory/:id                          InventoryCtrl.Get

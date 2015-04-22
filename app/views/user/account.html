@@ -16,7 +16,15 @@
 			</div> -->
 			<div class="col-sm-9 col-md-10 main">
 				<div class="container">
-					<h2 class="content-header">{{.name}}: {{.cardNo}}</h2>
+					<h2 class="content-header">{{.name}}:
+						{{if .cardNo}}
+							{{.cardNo}}
+						{{else}}
+							<!-- <a class="btn btn-success" href="/users/{{.userId}}/join">{{msg . "join"}}</a>  -->
+							<a class="btn btn-success" href="{{url "User.Join" .userId}}">{{msg . "join"}}</a> 
+						{{end}}
+
+					</h2>
 					<!-- <div class="row placeholders">
 		            <div class="col-md-4 col-sm-6 placeholder">
 		              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
@@ -55,5 +63,7 @@
 	</div>
 
 </div>
+
+
 
 {{template "new_footer.html" .}}
