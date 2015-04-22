@@ -206,7 +206,7 @@ func (a Auth) DoLogin(email, pwd, validationCode, captchaId string) revel.Result
 	a.Session["user"] = models.ToSessionUser(user).DisplayName()
 	a.Session["id"] = models.ToSessionUser(user).GetId()
 	log.Println("set register session:", a.Session, "with user:", user)
-	return a.Redirect(App.Index)
+	return a.Redirect("/users/%s", models.ToSessionUser(user).GetId())
 }
 
 func (a Auth) DoLogin2(email, pwd, validationCode, captchaId string) revel.Result {
