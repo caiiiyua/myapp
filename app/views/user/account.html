@@ -1,8 +1,7 @@
 {{set . "title" "我的账户 - "}}
+{{append . "moreScripts" "/public/js/holder.js"}}
+{{append . "moreScripts" "/public/js/app.js"}}
 {{template "new_header.html" .}}
-{{range .moreScripts}}
-      <script src="/public/js/holder.js" type="text/javascript" charset="utf-8"></script>
-{{end}}
 
 <div id="content" class="animated fadeInUp">
 	<div class="container-fluid">
@@ -16,53 +15,92 @@
 			</div> -->
 			<div class="col-sm-9 col-md-10 main">
 				<div class="container">
-					<h2 class="content-header">{{.name}}:
+					<h2 class="content-header" id="userName">会员姓名: {{.name}}</h2>
+					<h2 id="userCard">
 						{{if .cardNo}}
-							{{.cardNo}}
+							会员卡号: {{.cardNo}}
 						{{else}}
 							<!-- <a class="btn btn-success" href="/users/{{.userId}}/join">{{msg . "join"}}</a>  -->
 							<a class="btn btn-success" href="{{url "User.Join" .userId}}">{{msg . "join"}}</a> 
-						{{end}}
-
+						{{end}}						
 					</h2>
-					<!-- <div class="row placeholders">
-		            <div class="col-md-4 col-sm-6 placeholder">
-		              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-		              <h4>Label</h4>
-		              <span class="text-muted">Something else</span>
-		            </div>
-		            <div class="col-md-4 col-sm-6 placeholder">
-		              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-		              <h4>Label</h4>
-		              <span class="text-muted">Something else</span>
-		            </div>
-		            <div class="col-md-4 col-sm-6 placeholder">
-		              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-		              <h4>Label</h4>
-		              <span class="text-muted">Something else</span>
-		            </div>
-		          </div> -->
-				 <table class="table">
-				 	<tr>
-				 		<th>{{msg . "accountType"}}</th>
-				 		<th>{{msg . "amount"}}</th>
-				 		<th>{{msg . "charge"}}</th>
-				 	</tr>
-					{{range .account}}
-					<tr>
-						<td>{{.Name}}</td>
-						<td>{{.Qty}}</td>
-						<td><a href="#">{{msg $ "charge"}}</a></td>
-					</tr>
-					{{end}}
-				</table>
+					 <table class="table">
+					 	<tr>
+					 		<th>{{msg . "accountType"}}</th>
+					 		<th>{{msg . "amount"}}</th>
+					 		<th>{{msg . "charge"}}</th>
+					 	</tr>
+						{{range .account}}
+						<tr>
+							<td>{{.Name}}</td>
+							<td>{{.Qty}}</td>
+							<td><a class="order" href="#">{{msg $ "charge"}}</a></td>
+						</tr>
+						{{end}}
+					</table>
+
+					<div class="row placeholders">
+						{{range .account}}
+			            <div class="col-md-4 col-sm-6 placeholder">
+			              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+			              <span class="text-muted">{{.Qty}}</span>
+			              <h4>{{.Name}}</h4>
+			            </div>
+			            {{end}}
+			        </div>
 				</div>
-			</div>
-		
+			</div>	
 		</div>
 	</div>
-
 </div>
+
+<script type="text/javascript">
+var qualifyURL = function(pathOrURL) {
+	if (!(new RegExp('^(http(s)?[:]//)','i')).test(pathOrURL)) {
+		return $(document.body).data('base') + pathOrURL;
+	}
+	return pathOrURL;
+};
+
+$(document).ready(function() {
+	$('.order').on('click', function(event) {
+		event.preventDefault();
+		/* Act on the event */
+		var name = "刘丽萍"
+		var phone = "18615774413"
+		$.ajax({
+		    type: "POST",
+		    async: false,
+		    cache: false,
+		    dataType: 'jsonp',
+		    contentType: 'application/json; charset=utf-8',
+		    url: qualifyURL("http://naiping.pospal.cn/order/place"),
+		    data: JSON.stringify({
+		        customerName: name,
+		        customerPhoneNum: phone,
+		        customerAddress: "test",
+		        orderComment: "",
+		        paymentMethod: "Cash"
+		    }),
+		    error: function (XmlHttpRequest, textStatus, errorThrown) { alert("下单出现错误！"); },
+		    success: function (data) {
+		        if (data.status) {
+		            if (data.isHtml) {
+		                window.open(data.redirectUrl);
+		                $("body").append(data.html);
+		            }
+		            else {
+		                window.location.replace(data.redirectUrl);
+		            }
+		        }
+		        else {
+		            alert(data.message);
+		        }
+			}
+		});
+	});
+});
+</script>
 
 
 
