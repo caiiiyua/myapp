@@ -7,3 +7,4 @@ routes/
 .gitignore
 *.csv
 *.sublime*
+.vendor
