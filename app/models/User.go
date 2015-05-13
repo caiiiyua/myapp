@@ -66,6 +66,9 @@ type UserService interface {
 	CheckUserLogin(userId int64, userName string) (entity.User, bool)
 	JoinAccount(user *entity.User, vipNo, phoneNo string) error
 	GetUserItems(vipNo string) ([]ItemAccount, bool)
+	GetUserItem(vipNo string, itemId int64) (ItemAccount, bool)
+	AddItems(vipNo string, itemId int64, qty int64) (ItemAccount, bool)
+	ReduceItems(vipNo string, itemId int64, qty int64) (ItemAccount, bool)
 }
 
 func DefaultUserService(session *xorm.Session) UserService {
@@ -185,4 +188,42 @@ func (this *defaultUserService) JoinAccount(user *entity.User, vipNo, phoneNo st
 func (this *defaultUserService) GetUserItems(vipNo string) (items []ItemAccount, ok bool) {
 	this.session.Sql("select t_user_item.*, t_item.Name from t_user_item, t_item where t_user_item.card_id=? and t_user_item.item_id = t_item.code", vipNo).Find(&items)
 	return items, true
+}
+
+func (this *defaultUserService) GetUserItem(vipNo string, itemId int64) (item ItemAccount, ok bool) {
+	this.session.Sql("select t_user_item.*, t_item.Name from t_user_item, t_item where t_user_item.card_id=? and t_user_item.item_id=?", vipNo, itemId).Find(&item)
+	return item, true
+}
+
+func (this *defaultUserService) AddItems(vipNo string, itemId int64, qty int64) (userItem ItemAccount, ok bool) {
+	var item entity.UserItem
+	ok, err := this.session.Where("card_id=? and item_id=?", vipNo, itemId).Get(&item)
+	if !ok || err != nil {
+		return userItem, false
+	}
+	item.Qty += qty
+	_, updateErr := this.session.Cols("qty").Where("card_id=? and item_id=?", vipNo, itemId).Update(item)
+	if updateErr != nil {
+		log.Println("Update failed:", updateErr)
+		return userItem, false
+	}
+	return this.GetUserItem(vipNo, itemId)
+}
+
+func (this *defaultUserService) ReduceItems(vipNo string, itemId int64, qty int64) (userItem ItemAccount, ok bool) {
+	var item entity.UserItem
+	ok, err := this.session.Where("card_id=? and item_id=?", vipNo, itemId).Get(&item)
+	if !ok || err != nil {
+		return userItem, false
+	}
+	item.Qty -= qty
+	if item.Qty < 0 {
+		return userItem, false
+	}
+	_, updateErr := this.session.Cols("qty").Where("card_id=? and item_id=?", vipNo, itemId).Update(item)
+	if updateErr != nil {
+		log.Println("Update failed:", updateErr)
+		return userItem, false
+	}
+	return this.GetUserItem(vipNo, itemId)
 }

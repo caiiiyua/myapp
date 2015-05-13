@@ -2,7 +2,7 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-module:testrunner
+# module:testrunner
 
 # Home
 GET     /                                       App.Index
@@ -38,6 +38,14 @@ GET     /inventory/                             App.Inventory
 #PUT     /inventory/:id                          InventoryCtrl.Update
 #DELETE  /inventory/:id                          InventoryCtrl.Delete
 #GET     /inventories                            InventoryCtrl.List
+
+# Web API
+# Add a new VIP POST /users
+# Update VIP info PUT /users/:id
+# Update user items POST /useritems
+POST 	/useritems								User.UpdateItems
+# Get user items GET /useritems/:id
+GET 	/useritems/:id 							User.Items
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

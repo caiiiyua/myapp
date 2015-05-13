@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"log"
 	"myapp/app/models"
 
@@ -9,6 +10,24 @@ import (
 
 type User struct {
 	BaseController
+}
+
+type UserItems struct {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
+	Qty  int64  `json:"qty"`
+}
+
+type Act struct {
+	Card     string      `json:"card"`
+	Action   int         `json:"action"` //"0" for show and "1" for add and "2" for reduce
+	ActItems []UserItems `json:"items"`
+}
+
+func (c User) parseAct() (Act, error) {
+	var act Act
+	err := json.NewDecoder(c.Request.Body).Decode(&act)
+	return act, err
 }
 
 func (c User) Account(id string) revel.Result {
@@ -63,4 +82,35 @@ func (c User) DoJoin(id, vipno, phoneno string) revel.Result {
 		c.Validation.Error("Phone or Vip No. was not correct!").Key("join")
 	}
 	return c.Redirect("/users/%s", id)
+}
+
+func (c User) UpdateItems() revel.Result {
+	act, _ := c.parseAct()
+	log.Println("updateitems with account:", act)
+	for _, item := range act.ActItems {
+		if act.Action == 1 {
+			c.userService().AddItems(act.Card, item.Id, item.Qty)
+		} else if act.Action == 2 {
+			c.userService().ReduceItems(act.Card, item.Id, item.Qty)
+		}
+	}
+
+	account, _ := c.userService().GetUserItems(act.Card)
+	log.Println("latest account:", account)
+	retAct := Act{}
+	retAct.Card = act.Card
+	retAct.Action = 0
+	for _, item := range account {
+		i := UserItems{}
+		i.Id = item.ItemId
+		i.Name = item.Name
+		i.Qty = item.Qty
+		retAct.ActItems = append(retAct.ActItems, i)
+	}
+
+	return c.Render(retAct)
+}
+
+func (c User) Items() revel.Result {
+	return c.Render()
 }

@@ -3,7 +3,7 @@ package tests
 import (
 	"fmt"
 
-	"github.com/revel/revel"
+	"github.com/revel"
 )
 
 type AppTest struct {
