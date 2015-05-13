@@ -111,6 +111,20 @@ func (c User) UpdateItems() revel.Result {
 	return c.Render(retAct)
 }
 
-func (c User) Items() revel.Result {
-	return c.Render()
+func (c User) Items(id string) revel.Result {
+	act, _ := c.userService().CheckUserById(id)
+	account, _ := c.userService().GetUserItems(act.CardId)
+	log.Println("get account:", account)
+	retAct := Act{}
+	retAct.Card = act.CardId
+	retAct.Action = 0
+	for _, item := range account {
+		i := UserItems{}
+		i.Id = item.ItemId
+		i.Name = item.Name
+		i.Qty = item.Qty
+		retAct.ActItems = append(retAct.ActItems, i)
+	}
+
+	return c.Render(retAct)
 }
