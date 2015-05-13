@@ -1,10 +1,6 @@
 package tests
 
-import (
-	"fmt"
-
-	"github.com/revel"
-)
+import "fmt"
 
 type AppTest struct {
 	revel.TestSuite
