@@ -69,6 +69,8 @@ type UserService interface {
 	GetUserItem(vipNo string, itemId int64) (ItemAccount, bool)
 	AddItems(vipNo string, itemId int64, qty int64) (ItemAccount, bool)
 	ReduceItems(vipNo string, itemId int64, qty int64) (ItemAccount, bool)
+	AddVip(id, name, addr, phone, wId string) bool
+	UpdateVip(id, name, addr, phone, wId string) bool
 }
 
 func DefaultUserService(session *xorm.Session) UserService {
@@ -226,4 +228,42 @@ func (this *defaultUserService) ReduceItems(vipNo string, itemId int64, qty int6
 		return userItem, false
 	}
 	return this.GetUserItem(vipNo, itemId)
+}
+
+func (this *defaultUserService) AddVip(id, name, addr, phone, wId string) bool {
+	var user entity.User
+	var idx int64
+	this.session.Sql("select max(card_id)+1 from t_user").Find(&idx)
+	id = fmt.Sprintf("%07d", idx)
+	log.Println("new vip card_id is:", id)
+	user.Name = name
+	user.CardId = id
+	user.Address = addr
+	user.Mobile = phone
+	// user.wId = wId
+	_, err := this.session.Insert(&user)
+	if err != nil {
+		log.Println("Add Vip failed:", err)
+		return false
+	}
+	return true
+}
+
+func (this *defaultUserService) UpdateVip(id, name, addr, phone, wId string) bool {
+	var user entity.User
+	log.Println("updated vip card_id is:", id)
+	ok, err := this.session.Where("card_id=?", id).Get(&user)
+	if !ok || err != nil {
+		return false
+	}
+	user.Name = name
+	user.Address = addr
+	user.Mobile = phone
+	// user.wId = wId
+	_, updateErr := this.session.Update(&user)
+	if updateErr != nil {
+		log.Println("Add Vip failed:", updateErr)
+		return false
+	}
+	return true
 }

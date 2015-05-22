@@ -41,7 +41,9 @@ GET     /inventory/                             App.Inventory
 
 # Web API
 # Add a new VIP POST /users
+POST 	/members 								User.AddVip
 # Update VIP info PUT /users/:id
+POST 	/members/:id 							User.UpdateVip
 # Update user items POST /useritems
 POST 	/useritems								User.UpdateItems
 # Get user items GET /useritems/:id

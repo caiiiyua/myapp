@@ -24,6 +24,20 @@ type Act struct {
 	ActItems []UserItems `json:"items"`
 }
 
+type VIP struct {
+	id    string `json:"id"`
+	name  string `json:"name"`
+	phone string `json:"phone_num"`
+	addr  string `json:"address"`
+	wId   string `json:"wechat_id"`
+}
+
+func (c User) parseVIP() (VIP, error) {
+	var v VIP
+	err := json.NewDecoder(c.Request.Body).Decode(&v)
+	return v, err
+}
+
 func (c User) parseAct() (Act, error) {
 	var act Act
 	err := json.NewDecoder(c.Request.Body).Decode(&act)
@@ -127,4 +141,30 @@ func (c User) Items(id string) revel.Result {
 	}
 
 	return c.Render(retAct)
+}
+
+func (c User) AddVip() revel.Result {
+	vip, err := c.parseVIP()
+	if err != nil {
+		return c.RenderJson("")
+	}
+	ok := c.userService().AddVip(vip.id, vip.name, vip.addr, vip.phone, vip.wId)
+	if ok {
+		return c.Render(vip)
+	} else {
+		return c.RenderJson("")
+	}
+}
+
+func (c User) UpdateVip(id string) revel.Result {
+	vip, err := c.parseVIP()
+	if err != nil {
+		return c.RenderJson("")
+	}
+	ok := c.userService().UpdateVip(vip.id, vip.name, vip.addr, vip.phone, vip.wId)
+	if ok {
+		return c.Render(vip)
+	} else {
+		return c.RenderJson("")
+	}
 }
