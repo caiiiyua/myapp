@@ -170,7 +170,7 @@ func (c User) UpdateVip(id string) revel.Result {
 }
 
 func (c User) FeedBack() revel.Result {
-	var code, state, token, openId string
+	var code, state, token, openId, nickName, sex, city string
 	code = c.Params.Get("code")
 	state = c.Params.Get("state")
 	log.Println(code, state)
@@ -187,6 +187,11 @@ func (c User) FeedBack() revel.Result {
 	result["state"] = state
 	result["token"] = token
 	result["openId"] = openId
+
+	nickName, sex, city = c.WeChatGetUserInfo(token, openId)
+	result["nickName"] = nickName
+	result["sex"] = sex
+	result["city"] = city
 	return c.RenderJson(result)
 }
 

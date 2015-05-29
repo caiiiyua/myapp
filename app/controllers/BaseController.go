@@ -184,3 +184,15 @@ func (c BaseController) WeChatGetAccessToken(code, state string) (token, openId 
 	fmt.Println(me)
 	return me["access_token"].(string), me["openid"].(string)
 }
+
+func (c BaseController) WeChatGetUserInfo(accessToken, openId string) (nickName, sex, city string) {
+	userUrl := c.GetUserInfoUrl(accessToken, openId)
+	resp, _ := http.Get(userUrl)
+	defer resp.Body.Close()
+	me := map[string]interface{}{}
+	if err := json.NewDecoder(resp.Body).Decode(&me); err != nil {
+		revel.ERROR.Println(err)
+	}
+	fmt.Println(me)
+	return me["nickname"].(string), me["sex"].(string), me["city"].(string)
+}
