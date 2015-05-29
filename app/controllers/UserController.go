@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"myapp/app/models"
+	"myapp/app/models/oauth2"
 
 	"github.com/revel/revel"
 )
@@ -170,7 +171,9 @@ func (c User) UpdateVip(id string) revel.Result {
 }
 
 func (c User) FeedBack() revel.Result {
-	var code, state, token, openId, nickName, sex, city string
+	// var code, state, token, openId, nickName, sex, city string
+	var code, state string
+	var userinfo *oauth2.UserInfo
 	code = c.Params.Get("code")
 	state = c.Params.Get("state")
 	log.Println(code, state)
@@ -180,19 +183,21 @@ func (c User) FeedBack() revel.Result {
 		return c.Redirect("/users/%s", id)
 	} else {
 		// code, state = c.WeChatGetCode("feedback")
-		token, openId = c.WeChatGetAccessToken(code, state)
+		// token, openId = c.WeChatGetAccessToken(code, state)
+		userinfo = c.GetUerInfo2(code, state)
 	}
-	var result = make(map[string]string)
-	result["code"] = code
-	result["state"] = state
-	result["token"] = token
-	result["openId"] = openId
+	return c.RenderJson(userinfo)
+	// var result = make(map[string]string)
+	// result["code"] = code
+	// result["state"] = state
+	// result["token"] = token
+	// result["openId"] = openId
 
-	nickName, sex, city = c.WeChatGetUserInfo(token, openId)
-	result["nickName"] = nickName
-	result["sex"] = sex
-	result["city"] = city
-	return c.RenderJson(result)
+	// nickName, sex, city = c.WeChatGetUserInfo(token, openId)
+	// result["nickName"] = nickName
+	// result["sex"] = sex
+	// result["city"] = city
+	// return c.RenderJson(result)
 }
 
 func (c User) Bind() revel.Result {

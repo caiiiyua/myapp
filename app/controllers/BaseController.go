@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"myapp/app/models"
 	"myapp/app/models/entity"
+	"myapp/app/models/oauth2"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/revel/revel"
@@ -129,6 +131,21 @@ var WeChatOAuth = struct {
 	"https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN",
 }
 
+var WeChatOAuth2 = oauth2.NewOAuth2Config(WeChatOAuth.AppId, WeChatOAuth.Secret, "http://inaiping.wang/", "snsapi_userinfo")
+
+func (c BaseController) GetUerInfo2(code, state string) (userinfo *oauth2.UserInfo) {
+	oauth2Client := oauth2.Client{OAuth2Config: WeChatOAuth2}
+	_, err := oauth2Client.Exchange(code)
+	if err != nil {
+		return
+	}
+	userinfo, err = oauth2Client.UserInfo(oauth2.Language_zh_CN)
+	if err != nil {
+		return
+	}
+	return userinfo
+}
+
 func (c BaseController) GetCodeUrl(appId, redirectUri, state string) string {
 	u, _ := url.Parse(WeChatOAuth.CodeUrl)
 	q := u.Query()
@@ -194,5 +211,6 @@ func (c BaseController) WeChatGetUserInfo(accessToken, openId string) (nickName,
 		revel.ERROR.Println(err)
 	}
 	fmt.Println(me)
-	return me["nickname"].(string), me["sex"].(string), me["city"].(string)
+	sex = strconv.FormatFloat(me["sex"].(float64), 'f', 0, 32)
+	return me["nickname"].(string), sex, me["city"].(string)
 }
