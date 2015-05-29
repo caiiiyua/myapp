@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"myapp/app/models"
 	"myapp/app/models/entity"
 	"myapp/app/models/oauth2"
@@ -161,18 +162,19 @@ func (c BaseController) GetUerInfo2(code, state string) (userinfo *oauth2.UserIn
 func (c BaseController) WeChatLogin(code, state string) (userinfo *oauth2.UserInfo) {
 	userinfo = c.GetUerInfo2(code, state)
 	if userinfo == nil {
-		fmt.Println("WechatLogin failed...")
+		log.Println("WechatLogin failed...")
 		return
 	}
+	log.Println("wechat userinfo:", userinfo)
 	user, ok := c.userService().CheckWeChatMemberByUnionId(userinfo.UnionId)
 	if !ok {
 		user, _ = c.userService().AddWeChatMember(userinfo.OpenId, userinfo.UnionId, userinfo.Nickname,
 			fmt.Sprintf("%d", userinfo.Sex), userinfo.City, userinfo.Province, userinfo.HeadImageURL)
-		fmt.Println("add wechat member:", user)
+		log.Println("add wechat member:", user)
 	} else {
 		user, _ = c.userService().UpdateWeChatMember(user.Id, userinfo.OpenId, userinfo.UnionId, userinfo.Nickname,
 			fmt.Sprintf("%d", userinfo.Sex), userinfo.City, userinfo.Province, userinfo.HeadImageURL)
-		fmt.Println("update wechat member:", user)
+		log.Println("update wechat member:", user)
 	}
 	userinfo.Id = user.Id
 	c.Session["user"] = models.ToSessionUser(user).DisplayName()
