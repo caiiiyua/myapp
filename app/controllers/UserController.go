@@ -168,3 +168,28 @@ func (c User) UpdateVip(id string) revel.Result {
 		return c.RenderJson("")
 	}
 }
+
+func (c User) FeedBack() revel.Result {
+	var code, state, token, openId string
+	code = c.Params.Get("code")
+	state = c.Params.Get("state")
+	log.Println(code, state)
+	id, ok := c.Session["id"]
+	log.Println("id:", id, " ok:", ok)
+	if ok && id != "" && id != "0" {
+		return c.Redirect("/users/%s", id)
+	} else {
+		// code, state = c.WeChatGetCode("feedback")
+		token, openId = c.WeChatGetAccessToken(code, state)
+	}
+	var result = make(map[string]string)
+	result["code"] = code
+	result["state"] = state
+	result["token"] = token
+	result["openId"] = openId
+	return c.RenderJson(result)
+}
+
+func (c User) Bind() revel.Result {
+	return c.RenderJson("")
+}

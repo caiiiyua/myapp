@@ -1,8 +1,12 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
 	"myapp/app/models"
 	"myapp/app/models/entity"
+	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/revel/revel"
@@ -109,4 +113,74 @@ func (c BaseController) check(f interface{}) revel.Result {
 		return c.Redirect(f)
 	}
 	return nil
+}
+
+var WeChatOAuth = struct {
+	AppId          string
+	Secret         string
+	CodeUrl        string
+	AccessTokenUrl string
+	UserInfoUrl    string
+}{
+	"wx6212752719ca7a9f",
+	"secret", // need protect
+	"https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect",
+	"https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code",
+	"https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN",
+}
+
+func (c BaseController) GetCodeUrl(appId, redirectUri, state string) string {
+	u, _ := url.Parse(WeChatOAuth.CodeUrl)
+	q := u.Query()
+	q.Set("appid", appId)
+	q.Set("redirect_uri", "http://inaiping.wang/"+redirectUri)
+	q.Set("state", state)
+	u.RawQuery = q.Encode()
+	fmt.Println(u.String())
+	return u.String()
+}
+
+func (c BaseController) GetAccessTokenUrl(appId, secret, code, state string) string {
+	u, _ := url.Parse(WeChatOAuth.AccessTokenUrl)
+	q := u.Query()
+	q.Set("appid", appId)
+	q.Set("secret", secret)
+	q.Set("code", code)
+	u.RawQuery = q.Encode()
+	fmt.Println(u.String())
+	return u.String()
+}
+
+func (c BaseController) GetUserInfoUrl(accessToken, openId string) string {
+	u, _ := url.Parse(WeChatOAuth.UserInfoUrl)
+	q := u.Query()
+	q.Set("access_token", accessToken)
+	q.Set("openid", openId)
+	u.RawQuery = q.Encode()
+	fmt.Println(u.String())
+	return u.String()
+}
+
+func (c BaseController) WeChatGetCode(url string) (code, state string) {
+	codeUrl := c.GetCodeUrl(WeChatOAuth.AppId, url, url)
+	resp, _ := http.Get(codeUrl)
+	defer resp.Body.Close()
+	me := map[string]interface{}{}
+	if err := json.NewDecoder(resp.Body).Decode(&me); err != nil {
+		revel.ERROR.Println(err)
+	}
+	fmt.Println(me)
+	return me["code"].(string), me["state"].(string)
+}
+
+func (c BaseController) WeChatGetAccessToken(code, state string) (token, openId string) {
+	tokenUrl := c.GetAccessTokenUrl(WeChatOAuth.AppId, WeChatOAuth.Secret, code, state)
+	resp, _ := http.Get(tokenUrl)
+	defer resp.Body.Close()
+	me := map[string]interface{}{}
+	if err := json.NewDecoder(resp.Body).Decode(&me); err != nil {
+		revel.ERROR.Println(err)
+	}
+	fmt.Println(me)
+	return me["access_token"].(string), me["openid"].(string)
 }

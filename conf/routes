@@ -48,6 +48,8 @@ POST 	/members/:id 							User.UpdateVip
 POST 	/useritems								User.UpdateItems
 # Get user items GET /useritems/:id
 GET 	/useritems/:id 							User.Items
+GET 	/feedback 								User.FeedBack
+GET 	/bind 									User.Bind
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
