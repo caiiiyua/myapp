@@ -45,7 +45,7 @@ func (c User) parseAct() (Act, error) {
 	return act, err
 }
 
-func (c User) Account(id string) revel.Result {
+func (c User) Account2(id string) revel.Result {
 	if ret := c.checkLogined(id); ret != nil {
 		log.Println("id:", id, "was not logined!")
 		return ret
@@ -65,7 +65,7 @@ func (c User) Account(id string) revel.Result {
 	return c.Render(account, name, cardNo, userId)
 }
 
-func (c User) Account2(id string) revel.Result {
+func (c User) Account(id string) revel.Result {
 	if !c.IsWechatLogined2() {
 		code := c.Params.Get("code")
 		state := c.Params.Get("state")
