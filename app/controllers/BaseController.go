@@ -26,6 +26,18 @@ func (c BaseController) IsLogined(id string) bool {
 	return ok && ok2 && user != "" && userId == id
 }
 
+func (c BaseController) IsWechatLogined(id string, unionId string) bool {
+	userId, ok := c.Session["id"]
+	userInfo, ok2 := c.Session["userinfo"]
+	return ok && ok2 && userId == id && (userInfo == unionId)
+}
+
+func (c BaseController) IsWechatLogined2() bool {
+	userId, ok := c.Session["id"]
+	unionId, ok2 := c.Session["userinfo"]
+	return ok && ok2 && len(userId) > 0 && len(unionId) > 0
+}
+
 func (c BaseController) userService() models.UserService {
 	return models.DefaultUserService(c.XOrmSession)
 }
@@ -144,6 +156,28 @@ func (c BaseController) GetUerInfo2(code, state string) (userinfo *oauth2.UserIn
 		return
 	}
 	return userinfo
+}
+
+func (c BaseController) WeChatLogin(code, state string) (userinfo *oauth2.UserInfo) {
+	userinfo = c.GetUerInfo2(code, state)
+	if userinfo == nil {
+		fmt.Println("WechatLogin failed...")
+		return
+	}
+	user, ok := c.userService().CheckWeChatMemberByUnionId(userinfo.UnionId)
+	if !ok {
+		user, _ = c.userService().AddWeChatMember(userinfo.OpenId, userinfo.UnionId, userinfo.Nickname,
+			fmt.Sprintf("%d", userinfo.Sex), userinfo.City, userinfo.Province, userinfo.HeadImageURL)
+	} else {
+		user, _ = c.userService().UpdateWeChatMember(user.Id, userinfo.OpenId, userinfo.UnionId, userinfo.Nickname,
+			fmt.Sprintf("%d", userinfo.Sex), userinfo.City, userinfo.Province, userinfo.HeadImageURL)
+	}
+	userinfo.Id = user.Id
+	c.Session["user"] = models.ToSessionUser(user).DisplayName()
+	c.Session["id"] = models.ToSessionUser(user).GetId()
+	c.Session["userinfo"] = userinfo.UnionId
+
+	return
 }
 
 func (c BaseController) GetCodeUrl(appId, redirectUri, state string) string {

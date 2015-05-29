@@ -30,6 +30,7 @@ const (
 )
 
 type UserInfo struct {
+	Id       int64  `json:"id"`
 	OpenId   string `json:"openid"`   // 用户的唯一标识
 	Nickname string `json:"nickname"` // 用户昵称
 	Sex      int    `json:"sex"`      // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知

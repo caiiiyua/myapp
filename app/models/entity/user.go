@@ -51,6 +51,13 @@ type User struct {
 	UpdateTime              time.Time `db:"updatetime" json:"updatetime" xorm:"updated"`
 	LastSignAt              time.Time // last time logged in
 	DataVersion             int       `json:"-" xorm:"version '_version'"`
+	// userinfo related to wechat
+	OpenId     string `json:"openid" xorm:"varchar(128)"`
+	Nickname   string `json:"nickname" xorm:"varchar(128) index"`
+	City       string `json:"city" xorm:"varchar(64)"`
+	Province   string `json:"province" xorm:"varchar(64)"`
+	HeadimgUrl string `json:"headimgurl" xorm:"varchar(512)"`
+	UnionId    string `json:"unionid" xorm:"varchar(128) index"`
 }
 
 // Location of user

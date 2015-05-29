@@ -65,10 +65,46 @@ func (c User) Account(id string) revel.Result {
 	return c.Render(account, name, cardNo, userId)
 }
 
+func (c User) Account2(id string) revel.Result {
+	if !c.IsWechatLogined2() {
+		code := c.Params.Get("code")
+		state := c.Params.Get("state")
+		c.WeChatLogin(code, state)
+	}
+	userId := c.Session["id"]
+	user, ok := c.userService().CheckUserById(id)
+	if userId != id || !ok {
+		return c.RenderJson("login failed")
+	}
+
+	name := models.ToSessionUser(user).DisplayName()
+	cardNo := models.ToSessionUser(user).GetVipNo()
+	account, _ := c.userService().GetUserItems(cardNo)
+
+	log.Println("account:", account)
+	return c.Render(account, name, cardNo, userId)
+}
+
+func (c User) Accounts2() revel.Result {
+	if !c.IsWechatLogined2() {
+		code := c.Params.Get("code")
+		state := c.Params.Get("state")
+		userinfo := c.WeChatLogin(code, state)
+		if userinfo == nil {
+			return c.RenderJson("wechat login failed")
+		}
+	}
+	return c.Redirect("/users/%s", c.Session["id"])
+}
+
 func (c User) Accounts() revel.Result {
 
 	id, ok := c.Session["id"]
 	log.Println("id:", id, " ok:", ok)
+	if ret := c.checkLogined(id); ret != nil {
+		log.Println("id:", id, "was not logined...")
+		return ret
+	}
 	if ok && id != "" && id != "0" {
 		return c.Redirect("/users/%s", id)
 	}
@@ -177,27 +213,12 @@ func (c User) FeedBack() revel.Result {
 	code = c.Params.Get("code")
 	state = c.Params.Get("state")
 	log.Println(code, state)
-	id, ok := c.Session["id"]
-	log.Println("id:", id, " ok:", ok)
-	if ok && id != "" && id != "0" {
-		return c.Redirect("/users/%s", id)
-	} else {
+	if !c.IsWechatLogined2() {
 		// code, state = c.WeChatGetCode("feedback")
 		// token, openId = c.WeChatGetAccessToken(code, state)
-		userinfo = c.GetUerInfo2(code, state)
+		userinfo = c.WeChatLogin(code, state)
 	}
 	return c.RenderJson(userinfo)
-	// var result = make(map[string]string)
-	// result["code"] = code
-	// result["state"] = state
-	// result["token"] = token
-	// result["openId"] = openId
-
-	// nickName, sex, city = c.WeChatGetUserInfo(token, openId)
-	// result["nickName"] = nickName
-	// result["sex"] = sex
-	// result["city"] = city
-	// return c.RenderJson(result)
 }
 
 func (c User) Bind() revel.Result {

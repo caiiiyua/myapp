@@ -19,15 +19,20 @@ type ItemAccount struct {
 }
 
 type SessionUser struct {
-	Email   string
-	VipCode string
-	Name    string
-	Id      int64
+	Email    string
+	VipCode  string
+	Name     string
+	Nickname string
+	Id       int64
 }
 
 func (s SessionUser) DisplayName() string {
 	if len(s.Name) == 0 {
-		return s.Email
+		if len(s.Email) == 0 {
+			return s.Nickname
+		} else {
+			return s.Email
+		}
 	}
 	return s.Name
 }
@@ -42,10 +47,11 @@ func (s SessionUser) GetVipNo() string {
 
 func ToSessionUser(user entity.User) SessionUser {
 	return SessionUser{
-		Email:   user.Email,
-		VipCode: user.CardId,
-		Name:    user.Name,
-		Id:      user.Id,
+		Email:    user.Email,
+		VipCode:  user.CardId,
+		Name:     user.Name,
+		Id:       user.Id,
+		Nickname: user.Nickname,
 	}
 }
 
@@ -71,6 +77,12 @@ type UserService interface {
 	ReduceItems(vipNo string, itemId int64, qty int64) (ItemAccount, bool)
 	AddVip(id, name, addr, phone, wId string) bool
 	UpdateVip(id, name, addr, phone, wId string) bool
+
+	// User by Wechat
+	AddWeChatMember(openId, unionId, nickname, sex, city, province, headimgUrl string) (entity.User, error)
+	UpdateWeChatMember(id int64, openId, unionId, nickname, sex, city, province, headimgUrl string) (user entity.User, err error)
+	CheckWeChatMemberByOpenId(openId string) (user entity.User, ok bool)
+	CheckWeChatMemberByUnionId(unionId string) (user entity.User, ok bool)
 }
 
 func DefaultUserService(session *xorm.Session) UserService {
@@ -98,6 +110,44 @@ func (this *defaultUserService) ListUsers() (users []entity.User) {
 	this.session.Find(&users)
 	return
 }
+
+func (this *defaultUserService) AddWeChatMember(openId, unionId, nickname, sex,
+	city, province, headimgUrl string) (user entity.User, err error) {
+	user.OpenId = openId
+	user.UnionId = unionId
+	user.Gender = sex
+	user.Nickname = nickname
+	user.City = city
+	user.Province = province
+	user.HeadimgUrl = headimgUrl
+
+	_, err = this.session.Insert(&user)
+	return
+}
+
+func (this *defaultUserService) UpdateWeChatMember(id int64, openId, unionId, nickname, sex,
+	city, province, headimgUrl string) (user entity.User, err error) {
+	user.Gender = sex
+	user.Nickname = nickname
+	user.City = city
+	user.Province = province
+	user.HeadimgUrl = headimgUrl
+
+	_, err = this.session.Id(id).Update(&user)
+	return
+}
+
+func (this *defaultUserService) CheckWeChatMemberByOpenId(openId string) (user entity.User, ok bool) {
+	ok, err := this.session.Where("openid=?", openId).Get(&user)
+	return user, ok && err == nil
+}
+
+func (this *defaultUserService) CheckWeChatMemberByUnionId(unionId string) (user entity.User, ok bool) {
+	ok, err := this.session.Where("unionid=?", unionId).Get(&user)
+	return user, ok && err == nil
+}
+
+// ========================================================================================
 
 func (this *defaultUserService) RegistUserByEmail(email, password string) (user entity.User, err error) {
 	user.Email = email
