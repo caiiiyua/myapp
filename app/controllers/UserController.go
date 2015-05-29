@@ -72,9 +72,10 @@ func (c User) Account(id string) revel.Result {
 		c.WeChatLogin(code, state)
 	}
 	userId := c.Session["id"]
+	log.Println("id:", id, "userId:", userId)
 	user, ok := c.userService().CheckUserById(id)
 	if userId != id || !ok {
-		return c.RenderJson("login failed")
+		return c.Redirect(App.Index)
 	}
 
 	name := models.ToSessionUser(user).DisplayName()
@@ -91,7 +92,8 @@ func (c User) Accounts2() revel.Result {
 		state := c.Params.Get("state")
 		userinfo := c.WeChatLogin(code, state)
 		if userinfo == nil {
-			return c.RenderJson("wechat login failed")
+			// return c.RenderJson("wechat login failed")
+			return c.Redirect(App.Index)
 		}
 	}
 	return c.Redirect("/users/%s", c.Session["id"])

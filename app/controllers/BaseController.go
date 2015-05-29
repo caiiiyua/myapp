@@ -168,9 +168,11 @@ func (c BaseController) WeChatLogin(code, state string) (userinfo *oauth2.UserIn
 	if !ok {
 		user, _ = c.userService().AddWeChatMember(userinfo.OpenId, userinfo.UnionId, userinfo.Nickname,
 			fmt.Sprintf("%d", userinfo.Sex), userinfo.City, userinfo.Province, userinfo.HeadImageURL)
+		fmt.Println("add wechat member:", user)
 	} else {
 		user, _ = c.userService().UpdateWeChatMember(user.Id, userinfo.OpenId, userinfo.UnionId, userinfo.Nickname,
 			fmt.Sprintf("%d", userinfo.Sex), userinfo.City, userinfo.Province, userinfo.HeadImageURL)
+		fmt.Println("update wechat member:", user)
 	}
 	userinfo.Id = user.Id
 	c.Session["user"] = models.ToSessionUser(user).DisplayName()
