@@ -151,10 +151,12 @@ func (c BaseController) GetUerInfo2(code, state string) (userinfo *oauth2.UserIn
 	oauth2Client := oauth2.Client{OAuth2Config: WeChatOAuth2}
 	_, err := oauth2Client.Exchange(code)
 	if err != nil {
+		log.Println("Exchange with err:", err)
 		return
 	}
 	userinfo, err = oauth2Client.UserInfo(oauth2.Language_zh_CN)
 	if err != nil {
+		log.Println("get userinfo with err:", err)
 		return
 	}
 	return userinfo

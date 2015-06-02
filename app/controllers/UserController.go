@@ -90,12 +90,14 @@ func (c User) Accounts2() revel.Result {
 	if !c.IsWechatLogined2() {
 		code := c.Params.Get("code")
 		state := c.Params.Get("state")
+		log.Println("Account2 with code:", code, "state:", state)
 		userinfo := c.WeChatLogin(code, state)
 		if userinfo == nil {
 			// return c.RenderJson("wechat login failed")
 			return c.Redirect(App.Index)
 		}
 	}
+	log.Println("Account2 get ready to redirect to uri:", c.Session["id"])
 	return c.Redirect("/users/%s", c.Session["id"])
 }
 
