@@ -132,6 +132,7 @@ func (this *defaultUserService) UpdateWeChatMember(id int64, openId, unionId, ni
 	user.City = city
 	user.Province = province
 	user.HeadimgUrl = headimgUrl
+	user.Id = id
 
 	_, err = this.session.Id(id).Update(&user)
 	return
