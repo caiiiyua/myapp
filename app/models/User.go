@@ -138,12 +138,12 @@ func (this *defaultUserService) UpdateWeChatMember(id int64, openId, unionId, ni
 }
 
 func (this *defaultUserService) CheckWeChatMemberByOpenId(openId string) (user entity.User, ok bool) {
-	ok, err := this.session.Where("openid=?", openId).Get(&user)
+	ok, err := this.session.Where("open_id=?", openId).Get(&user)
 	return user, ok && err == nil
 }
 
 func (this *defaultUserService) CheckWeChatMemberByUnionId(unionId string) (user entity.User, ok bool) {
-	ok, err := this.session.Where("unionid=?", unionId).Get(&user)
+	ok, err := this.session.Where("union_id=?", unionId).Get(&user)
 	return user, ok && err == nil
 }
 
