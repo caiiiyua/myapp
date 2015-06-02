@@ -37,6 +37,7 @@ func (c BaseController) IsWechatLogined(id string, unionId string) bool {
 func (c BaseController) IsWechatLogined2() bool {
 	userId, ok := c.Session["id"]
 	unionId, ok2 := c.Session["userinfo"]
+	log.Println("IsWechatLogined2 id:", userId, " unionId:", userInfo)
 	return ok && ok2 && len(userId) > 0 && len(unionId) > 0
 }
 
